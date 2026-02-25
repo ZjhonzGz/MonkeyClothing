@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Ventas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { background: #f2f0eb; font-family: 'DM Sans', sans-serif; font-weight: 300; color: #111; }
+        .page-wrapper { max-width: 1100px; margin: 2.5rem auto; padding: 0 1.5rem; }
+        .page-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.8rem; flex-wrap: wrap; gap: 1rem; }
+        .page-header h1 { font-family: 'Bebas Neue', sans-serif; font-size: 2.2rem; letter-spacing: .08em; color: #111; line-height: 1; }
+        .page-header p { font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: #aaa; margin-top: .3rem; }
+        .header-actions { display: flex; gap: .8rem; align-items: center; flex-wrap: wrap; }
+        .btn-mc { border: none; padding: .65rem 1.4rem; font-family: 'Bebas Neue', sans-serif; font-size: .85rem; letter-spacing: .2em; text-decoration: none !important; transition: background .2s; white-space: nowrap; display: inline-block; cursor: pointer; }
+        .btn-mc-dark { background: #111; color: #f2f0eb !important; }
+        .btn-mc-dark:hover { background: #ff3b00; color: #fff !important; }
+        .btn-mc-outline { background: transparent; color: #111 !important; border: 1px solid #111; }
+        .btn-mc-outline:hover { background: #111; color: #f2f0eb !important; }
+        .table-wrap { background: #fff; border-top: 3px solid #ff3b00; }
+        table { width: 100%; border-collapse: collapse; }
+        thead tr { border-bottom: 1px solid #eee; }
+        thead th { font-size: .6rem; letter-spacing: .25em; text-transform: uppercase; color: #aaa; padding: 1rem 1.2rem; font-weight: 400; text-align: left; }
+        tbody tr { border-bottom: 1px solid #f4f4f4; transition: background .15s; }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafafa; }
+        tbody td { padding: .9rem 1.2rem; font-size: .88rem; color: #333; }
+        .precio { font-weight: 500; }
+        .total-cell { font-weight: 500; color: #111; }
+        .btn-accion { font-size: .6rem; letter-spacing: .15em; text-transform: uppercase; text-decoration: none !important; padding: .3rem .75rem; border: 1px solid #111; color: #111 !important; transition: background .2s, color .2s; display: inline-block; background: none; cursor: pointer; }
+        .btn-accion:hover { background: #111; color: #f2f0eb !important; }
+        .empty { text-align: center; padding: 3rem; font-size: .8rem; color: #bbb; letter-spacing: .1em; text-transform: uppercase; }
+
+        /* Modal personalizado */
+        .mc-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,.45);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .mc-modal-overlay.open { display: flex; }
+        .mc-modal {
+            background: #fff;
+            width: 90%;
+            max-width: 750px;
+            max-height: 85vh;
+            overflow-y: auto;
+            border-top: 4px solid #ff3b00;
+            padding: 2rem;
+            position: relative;
+            animation: slideUp .2s ease;
+        }
+        @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .mc-modal-close {
+            position: absolute;
+            top: 1rem; right: 1.2rem;
+            background: none; border: none;
+            font-size: 1.4rem; cursor: pointer; color: #aaa;
+        }
+        .mc-modal-close:hover { color: #ff3b00; }
+        .mc-modal h2 { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; letter-spacing: .08em; margin-bottom: .25rem; }
+        .mc-modal .sub { font-size: .7rem; letter-spacing: .2em; text-transform: uppercase; color: #aaa; margin-bottom: 1.5rem; }
+        .info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem 1.5rem; margin-bottom: 1.5rem; }
+        .info-item label { font-size: .6rem; letter-spacing: .2em; text-transform: uppercase; color: #aaa; display: block; margin-bottom: .1rem; }
+        .info-item span { font-size: .88rem; font-weight: 500; color: #111; }
+        .detalle-table { width: 100%; border-collapse: collapse; margin-top: .5rem; }
+        .detalle-table thead th { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: #aaa; padding: .6rem .8rem; text-align: left; border-bottom: 1px solid #eee; }
+        .detalle-table tbody td { padding: .65rem .8rem; font-size: .84rem; border-bottom: 1px solid #f4f4f4; color: #333; }
+        .detalle-table tbody tr:last-child td { border-bottom: none; }
+        .totales-row { margin-top: 1.2rem; display: flex; justify-content: flex-end; gap: 2rem; }
+        .totales-row .t-item { text-align: right; }
+        .totales-row .t-item label { font-size: .58rem; letter-spacing: .2em; text-transform: uppercase; color: #aaa; display: block; }
+        .totales-row .t-item span { font-size: .95rem; font-weight: 500; }
+        .totales-row .t-item.grand span { font-size: 1.1rem; color: #ff3b00; }
+    </style>
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <div>
+            <h1>Ventas</h1>
+            <p>Historial de ventas registradas</p>
+        </div>
+        <div class="header-actions">
+            <a th:href="@{/reportes/ventas/pdf}" target="_blank" class="btn-mc btn-mc-outline">📄 Reporte PDF</a>
+            <a th:href="@{/venta/new}" class="btn-mc btn-mc-dark">+ Nueva Venta</a>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nro</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Asesor</th>
+                    <th>Subtotal</th>
+                    <th>IGV</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(ventas)}">
+                    <td colspan="8" class="empty">No hay ventas registradas</td>
+                </tr>
+                <tr th:each="item : ${ventas}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${#dates.format(item.fecha, 'dd/MM/yyyy HH:mm')}"></td>
+                    <td th:text="${item.cliente.razonSocial}"></td>
+                    <td th:text="${item.asesorVenta.nombres}"></td>
+                    <td class="precio" th:text="'S/ ' + ${item.subtotal}"></td>
+                    <td class="precio" th:text="'S/ ' + ${item.igv}"></td>
+                    <td class="total-cell" th:text="'S/ ' + ${item.total}"></td>
+                    <td>
+                        <a th:href="@{/venta/verDetalle/{id}(id=${item.id})}"
+                           class="btn-accion">Ver Detalle</a>
+						   
+						   <form th:action="@{/venta/eliminar/{id}(id=${item.id})}" method="post"
+						         style="display:inline;"
+						         onsubmit="return confirm('¿Desea eliminar esta venta?')">
+						           <button type="submit" class="btn-accion"
+						                   style="border-color:#ff3b00; color:#ff3b00;">Eliminar</button>
+						       </form>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ── MODAL DETALLE ── -->
+<div class="mc-modal-overlay" id="modalOverlay" th:classappend="${ventaSeleccionada != null} ? 'open' : ''">
+    <div class="mc-modal" th:if="${ventaSeleccionada != null}">
+        <button class="mc-modal-close" onclick="cerrarModal()">✕</button>
+
+        <h2 th:text="'Venta #' + ${ventaSeleccionada.id}">Venta #</h2>
+        <p class="sub">Detalle de productos vendidos</p>
+
+        <div class="info-grid">
+            <div class="info-item">
+                <label>Fecha</label>
+                <span th:text="${#dates.format(ventaSeleccionada.fecha, 'dd/MM/yyyy HH:mm')}"></span>
+            </div>
+            <div class="info-item">
+                <label>Cliente</label>
+                <span th:text="${ventaSeleccionada.cliente.razonSocial}"></span>
+            </div>
+            <div class="info-item">
+                <label>Asesor de Venta</label>
+                <span th:text="${ventaSeleccionada.asesorVenta.nombres}"></span>
+            </div>
+        </div>
+
+        <table class="detalle-table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unit.</th>
+                    <th>Importe</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="d : ${listDetalleVenta}">
+                    <td th:text="${d.id.producto.descripcion}"></td>
+                    <td th:text="${d.cantidadVta}"></td>
+                    <td th:text="'S/ ' + ${d.precioVta}"></td>
+                    <td th:text="'S/ ' + ${d.importeVta}"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="totales-row">
+            <div class="t-item">
+                <label>Subtotal</label>
+                <span th:text="'S/ ' + ${ventaSeleccionada.subtotal}"></span>
+            </div>
+            <div class="t-item">
+                <label>IGV (18%)</label>
+                <span th:text="'S/ ' + ${ventaSeleccionada.igv}"></span>
+            </div>
+            <div class="t-item grand">
+                <label>Total</label>
+                <span th:text="'S/ ' + ${ventaSeleccionada.total}"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script>
+    function cerrarModal() {
+        document.getElementById('modalOverlay').classList.remove('open');
+        // limpia la URL sin recargar para que al refrescar no reaparezca el modal
+        history.replaceState(null, '', '/venta');
+    }
+    // cerrar al hacer clic fuera del modal
+    document.getElementById('modalOverlay').addEventListener('click', function(e) {
+        if (e.target === this) cerrarModal();
+    });
+</script>
+</body>
+</html>

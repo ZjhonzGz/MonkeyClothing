@@ -1,0 +1,12 @@
+package com.cibertec.monkey.service;
+
+import com.cibertec.monkey.entity.Usuario;
+
+public boolean login(Usuario usuario) {
+
+    Usuario user = usuarioRepository
+            .findByUsuarioAndClave(usuario.getUsuario(), usuario.getClave());
+
+    return user != null;
+}
+}

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Vendedor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #f2f0eb;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            color: #111;
+        }
+
+        .page-wrapper {
+            max-width: 560px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-header { margin-bottom: 1.8rem; }
+
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: .08em;
+            color: #111;
+            line-height: 1;
+        }
+
+        .page-header p {
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: .3rem;
+        }
+
+        .form-card {
+            background: #fff;
+            border-top: 3px solid #111;
+            padding: 2.2rem 2rem;
+        }
+
+        .field { margin-bottom: 1.6rem; }
+
+        .field label {
+            display: block;
+            font-size: .62rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: .5rem;
+        }
+
+        .field input {
+            width: 100%;
+            border: none;
+            border-bottom: 1.5px solid #ddd;
+            padding: .6rem 0;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .95rem;
+            color: #111;
+            background: transparent;
+            outline: none;
+            transition: border-color .2s;
+        }
+
+        .field input:focus { border-color: #111; }
+
+        .form-actions {
+            display: flex;
+            gap: .8rem;
+            margin-top: 2rem;
+        }
+
+        .btn-guardar {
+            background: #111;
+            color: #f2f0eb !important;
+            border: none;
+            padding: .75rem 1.6rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .btn-guardar:hover { background: #ff3b00; }
+
+        .btn-cancelar {
+            background: transparent;
+            color: #111 !important;
+            border: 1px solid #ccc;
+            padding: .75rem 1.6rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            cursor: pointer;
+            transition: border-color .2s;
+            text-decoration: none !important;
+            display: inline-block;
+        }
+
+        .btn-cancelar:hover { border-color: #111; }
+    </style>
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <h1 th:text="${asesor.id == null} ? 'Nuevo Vendedor' : 'Editar Vendedor'">Vendedor</h1>
+        <p>Datos del asesor de venta</p>
+    </div>
+
+	<div class="form-card">
+
+	    <div class="alert" th:if="${error}" th:text="${error}"
+	         style="font-size:.78rem; color:#ff3b00; background:rgba(255,59,0,.06);
+	                border-left:3px solid #ff3b00; padding:.65rem 1rem; margin-bottom:1.5rem;">
+	    </div>
+
+	    <form th:action="@{/asesor}" th:object="${asesor}" method="post">
+			
+	        <input type="hidden" th:field="*{id}"/>
+
+	        <div class="field">
+	            <label>Nombres</label>
+	            <input type="text" th:field="*{nombres}"/>
+	        </div>
+
+	        <div class="field">
+	            <label>Email</label>
+	            <input type="email" th:field="*{email}"/>
+	        </div>
+
+	        <div class="field">
+	            <label>Teléfono</label>
+	            <input type="text" th:field="*{telefono}" inputmode="numeric"/>
+	        </div>
+
+	        <div class="form-actions">
+	            <button type="submit" class="btn-guardar">Guardar</button>
+	            <a href="/usuario" class="btn-cancelar">Cancelar</a>
+	        </div>
+
+	    </form>
+	</div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+	package com.cibertec.monkey.controller;
+	import com.cibertec.monkey.entity.Categoria;
+	
+	import java.util.List;
+	
+	import org.springframework.beans.factory.annotation.Autowired;
+	import org.springframework.stereotype.Controller;
+	import org.springframework.ui.Model;
+	import org.springframework.web.bind.annotation.GetMapping;
+	
+	import com.cibertec.monkey.entity.Categoria;
+	import com.cibertec.monkey.repository.CategoriaRepository;
+	
+	@Controller
+	public class CategoriaController {
+	
+	    @Autowired
+	    private CategoriaRepository repo;
+	
+	    @GetMapping("/categorias")
+	    public String listarCategorias(Model model) {
+	
+	        List<Categoria> lista = repo.findAll();
+	
+	        model.addAttribute("categorias", lista);
+	
+	        return "categorias";
+	    }
+	}

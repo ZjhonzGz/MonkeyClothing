@@ -1,0 +1,47 @@
+package com.cibertec.monkey.service.impl;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.repository.UsuarioRepository;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Service
+public class UsuarioServiceImpl implements UsuarioService {
+
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
+    @Override
+    public Usuario guardarUsuario(Usuario usuario) {
+        return usuarioRepository.save(usuario);
+    }
+
+    @Override
+    public List<Usuario> listarTodosUsuario() {
+        return usuarioRepository.findAll();
+    }
+
+    @Override
+    public boolean login(Usuario usuario) {
+
+        Usuario user = usuarioRepository.findByUsuarioAndClave(
+                usuario.getUsuario(),
+                usuario.getClave()
+        );
+
+        if (user != null) {
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public Usuario buscarByUsuario(String username) {
+        return usuarioRepository.findByUsuario(username);
+    }
+}

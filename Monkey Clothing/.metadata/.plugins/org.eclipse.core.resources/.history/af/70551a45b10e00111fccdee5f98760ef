@@ -1,0 +1,17 @@
+package com.cibertec.monkey.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import com.cibertec.monkey.entity.Usuario;
+
+public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
+
+    @Query(value = "SELECT * FROM usuario u WHERE u.usuario = :username", nativeQuery = true)
+    Usuario findByUsuario(@Param("username") String username);
+
+    @Query(value = "SELECT * FROM usuario u WHERE u.usuario = :username AND u.clave = :clave", nativeQuery = true)
+    Usuario findByUsuarioAndClave(@Param("username") String username,
+                                  @Param("clave") String clave);
+}

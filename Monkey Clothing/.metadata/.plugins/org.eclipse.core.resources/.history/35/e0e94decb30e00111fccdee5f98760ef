@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monkey Clothing - Login</title>
+</head>
+<body>
+
+<h2>Monkey Clothing - Iniciar Sesión</h2>
+
+<form th:action="@{/login}" method="post">
+    <div>
+        <label>Usuario:</label>
+        <input type="text" name="usuario" required/>
+    </div>
+    <div>
+        <label>Contraseña:</label>
+        <input type="password" name="clave" required/>
+    </div>
+    <button type="submit">Ingresar</button>
+</form>
+
+</body>
+</html>
+```
+
+También verifica que tengas estas otras vistas que el controller referencia, porque si no las tienes van a fallar también:
+```
+src/main/resources/templates/
+├── login.html          ← crear ahora
+├── register.html       ← ¿existe?
+├── error_login.html    ← ¿existe?
+└── usuario/
+    ├── index.html      ← ¿existe?
+    └── create.html     ← ¿existe?

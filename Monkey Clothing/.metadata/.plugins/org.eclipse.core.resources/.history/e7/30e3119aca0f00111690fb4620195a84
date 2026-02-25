@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar" style="
+    background: #111;
+    font-family: 'DM Sans', sans-serif;
+    border-bottom: 3px solid #ff3b00;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 58px;
+    position: sticky;
+    top: 0;
+    z-index: 999;
+">
+
+    <!-- Marca -->
+    <a th:href="@{/}" style="
+        font-family: 'Bebas Neue', sans-serif;
+        font-size: 1.4rem;
+        letter-spacing: .12em;
+        color: #f2f0eb;
+        text-decoration: none;
+    ">Monkey Clothing</a>
+
+    <!-- Links centro -->
+    <div style="display: flex; gap: 0; align-items: center; height: 100%;">
+        <a th:href="@{/usuario}"   class="nav-link-mc">Usuarios</a>
+        <a th:href="@{/cliente}"   class="nav-link-mc">Clientes</a>
+        <a th:href="@{/productos}" class="nav-link-mc">Productos</a>
+        <a th:href="@{/venta}"     class="nav-link-mc">Ventas</a>
+    </div>
+
+    <!-- Cerrar sesión -->
+    <a th:href="@{/}" style="
+        font-size: .72rem;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: #aaa;
+        text-decoration: none;
+        transition: color .2s;
+        padding: .4rem .9rem;
+        border: 1px solid #333;
+    "
+    onmouseover="this.style.color='#ff3b00'; this.style.borderColor='#ff3b00'"
+    onmouseout="this.style.color='#aaa'; this.style.borderColor='#333'"
+    >Salir</a>
+
+</nav>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+    .nav-link-mc {
+        display: inline-flex;
+        align-items: center;
+        height: 58px;
+        padding: 0 1.2rem;
+        font-size: .72rem;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: #aaa;
+        text-decoration: none;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -3px;
+        transition: color .2s, border-color .2s;
+    }
+    .nav-link-mc:hover {
+        color: #f2f0eb;
+        border-bottom-color: #ff3b00;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

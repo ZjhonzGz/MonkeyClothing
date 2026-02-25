@@ -1,0 +1,14 @@
+package com.cibertec.monkey.service;
+
+import java.util.List;
+import com.cibertec.monkey.entity.Producto;
+
+public interface ProductoService {
+    List<Producto> listar();
+    Producto guardar(Producto producto);
+    Producto buscarPorId(Integer id);
+    void eliminar(Integer id);
+    Producto buscarProductoByCodigo(String codigo);
+    Producto buscarProductoById(Integer id);
+    Producto guardarProducto(Producto producto);
+}

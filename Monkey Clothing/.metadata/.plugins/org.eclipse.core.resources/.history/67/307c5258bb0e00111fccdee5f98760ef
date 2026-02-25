@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monkey Clothing - Usuarios</title>
+</head>
+<body>
+
+<h1>Bienvenido a Monkey Clothing</h1>
+<h2>Lista de Usuarios</h2>
+
+<a href="/usuario/new">Nuevo Usuario</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombres</th>
+            <th>Apellidos</th>
+            <th>Usuario</th>
+            <th>Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="u : ${usuarios}">
+            <td th:text="${u.id}"></td>
+            <td th:text="${u.nombres}"></td>
+            <td th:text="${u.apellidos}"></td>
+            <td th:text="${u.usuario}"></td>
+            <td th:text="${u.rol.descripcion}"></td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

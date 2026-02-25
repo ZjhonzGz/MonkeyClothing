@@ -1,0 +1,7 @@
+package com.cibertec.monkey.dto;
+
+public interface Productosstock {
+    String getDescripcion();
+    String getCategoria();
+    Integer getStock();
+}

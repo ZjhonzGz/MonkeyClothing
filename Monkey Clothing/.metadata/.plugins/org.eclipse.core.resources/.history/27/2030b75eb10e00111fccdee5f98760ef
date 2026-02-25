@@ -1,0 +1,79 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Controller
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    // =============================
+    // MUESTRA LOGIN AL ENTRAR
+    // http://localhost:8080/
+    // =============================
+    @GetMapping("/")
+    public String login(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "login";
+    }
+
+    // =============================
+    // PROCESA LOGIN
+    // =============================
+    @PostMapping("/login")
+    public String iniciarSesion(@ModelAttribute("usuario") Usuario usuario,
+                                Model model) {
+
+        boolean band = usuarioService.login(usuario);
+
+        if (band == true) {
+
+            model.addAttribute("usuarios", usuarioService.listarTodosUsuario());
+
+            return "usuario/index"; // pantalla después del login
+
+        } else {
+            return "error_login";
+        }
+    }
+
+    // =============================
+    // LISTAR USUARIOS
+    // =============================
+    @GetMapping("/usuario")
+    public String listUsuarios(Model model) {
+
+        model.addAttribute("usuarios", usuarioService.listarTodosUsuario());
+
+        return "usuario/index";
+    }
+
+    // =============================
+    // FORM NUEVO USUARIO
+    // =============================
+    @GetMapping("/usuario/new")
+    public String createUsuarioForm(Model model) {
+
+        Usuario usuario = new Usuario();
+        model.addAttribute("usuario", usuario);
+
+        return "usuario/create";
+    }
+
+    // =============================
+    // GUARDAR USUARIO
+    // =============================
+    @PostMapping("/usuario")
+    public String saveUsuario(@ModelAttribute("usuario") Usuario usuario) {
+
+        usuarioService.guardarUsuario(usuario);
+        return "redirect:/usuario";
+    }
+}

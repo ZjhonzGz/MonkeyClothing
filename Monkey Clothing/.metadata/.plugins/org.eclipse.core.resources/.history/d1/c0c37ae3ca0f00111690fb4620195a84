@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar" id="mc-navbar">
+
+    <!-- Marca -->
+    <a th:href="@{/}" id="mc-brand">Monkey Clothing</a>
+
+    <!-- Links centro -->
+    <div id="mc-links">
+        <a th:href="@{/usuario}"   class="mc-link">Usuarios</a>
+        <a th:href="@{/cliente}"   class="mc-link">Clientes</a>
+        <a th:href="@{/productos}" class="mc-link">Productos</a>
+        <a th:href="@{/venta}"     class="mc-link">Ventas</a>
+    </div>
+
+    <!-- Cerrar sesión -->
+    <a th:href="@{/}" id="mc-salir">Salir</a>
+
+</nav>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+    #mc-navbar {
+        background: #111 !important;
+        border-bottom: 3px solid #ff3b00;
+        padding: 0 2rem;
+        display: flex !important;
+        align-items: center;
+        justify-content: space-between;
+        height: 58px;
+        position: sticky;
+        top: 0;
+        z-index: 999;
+    }
+
+    #mc-brand {
+        font-family: 'Bebas Neue', sans-serif !important;
+        font-size: 1.4rem !important;
+        letter-spacing: .12em;
+        color: #f2f0eb !important;
+        text-decoration: none !important;
+    }
+
+    #mc-links {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        gap: 0;
+    }
+
+    #mc-navbar .mc-link {
+        display: inline-flex;
+        align-items: center;
+        height: 58px;
+        padding: 0 1.2rem;
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: .72rem !important;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: #aaa !important;
+        text-decoration: none !important;
+        border-bottom: 3px solid transparent;
+        margin-bottom: -3px;
+        transition: color .2s, border-color .2s;
+    }
+
+    #mc-navbar .mc-link:hover {
+        color: #f2f0eb !important;
+        border-bottom-color: #ff3b00;
+    }
+
+    #mc-salir {
+        font-family: 'DM Sans', sans-serif !important;
+        font-size: .72rem !important;
+        letter-spacing: .2em;
+        text-transform: uppercase;
+        color: #aaa !important;
+        text-decoration: none !important;
+        padding: .4rem .9rem;
+        border: 1px solid #444;
+        transition: color .2s, border-color .2s;
+    }
+
+    #mc-salir:hover {
+        color: #ff3b00 !important;
+        border-color: #ff3b00;
+        text-decoration: none !important;
+    }
+</style>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

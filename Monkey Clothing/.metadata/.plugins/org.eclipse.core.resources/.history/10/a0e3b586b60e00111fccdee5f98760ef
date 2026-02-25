@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monkey Clothing - Clientes</title>
+</head>
+<body>
+
+<h1>Lista de Clientes</h1>
+<a href="/cliente/new">Nuevo Cliente</a>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Razón Social</th>
+            <th>Ciudad</th>
+            <th>Dirección</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="c : ${clientes}">
+            <td th:text="${c.idclie}"></td>
+            <td th:text="${c.razonSoc}"></td>
+            <td th:text="${c.nombreCiudad}"></td>
+            <td th:text="${c.direccionClie}"></td>
+            <td th:text="${c.telefono}"></td>
+            <td>
+                <a th:href="@{/cliente/edit/{id}(id=${c.idclie})}">Editar</a>
+                <a th:href="@{/cliente/delete/{id}(id=${c.idclie})}"
+                   onclick="return confirm('¿Eliminar cliente?')">Eliminar</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

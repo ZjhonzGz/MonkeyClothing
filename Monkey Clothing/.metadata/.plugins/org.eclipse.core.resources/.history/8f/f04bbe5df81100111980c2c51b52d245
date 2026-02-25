@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Clientes / Newsletter</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #f2f0eb;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            color: #111;
+        }
+
+        .page-wrapper {
+            max-width: 1200px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* ─ Cabecera ─ */
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: .08em;
+            color: #111;
+            line-height: 1;
+        }
+        .page-header p {
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: .3rem;
+        }
+
+        /* ─ Botones principales ─ */
+        .btn-mc {
+            background: #111;
+            color: #f2f0eb !important;
+            border: none;
+            padding: .65rem 1.4rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            text-decoration: none !important;
+            transition: background .2s;
+            white-space: nowrap;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-mc:hover { background: #ff3b00; color: #fff !important; }
+
+        .btn-mc-purple {
+            background: rgb(128,0,255);
+            color: #fff !important;
+            border: none;
+            padding: .65rem 1.4rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            text-decoration: none !important;
+            transition: background .2s, opacity .2s;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: .4rem;
+            cursor: pointer;
+        }
+        .btn-mc-purple:hover:not(:disabled) { background: #7a00f5; }
+        .btn-mc-purple:disabled { opacity: .38; cursor: not-allowed; }
+
+        /* ─ Filtro tabs ─ */
+        .filter-tabs {
+            display: flex;
+            gap: .5rem;
+            margin-bottom: 1.2rem;
+            flex-wrap: wrap;
+        }
+        .filter-tab {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .78rem;
+            letter-spacing: .15em;
+            padding: .4rem 1rem;
+            border: 1px solid #ccc;
+            background: transparent;
+            color: #777;
+            cursor: pointer;
+            transition: all .2s;
+        }
+        .filter-tab.active,
+        .filter-tab:hover { background: #111; color: #f2f0eb; border-color: #111; }
+        .filter-tab.active-nl { background: rgb(128,0,255); color: #fff; border-color: rgb(128,0,255); }
+
+        /* ─ Tabla ─ */
+        .table-wrap {
+            background: #fff;
+            border-top: 3px solid #ff3b00;
+            overflow-x: auto;
+        }
+
+        table { width: 100%; border-collapse: collapse; min-width: 780px; }
+        thead tr { border-bottom: 1px solid #eee; }
+        thead th {
+            font-size: .6rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: #aaa;
+            padding: 1rem 1.2rem;
+            font-weight: 400;
+            text-align: left;
+            white-space: nowrap;
+        }
+        thead th.check-col { width: 44px; }
+        tbody tr {
+            border-bottom: 1px solid #f4f4f4;
+            transition: background .15s;
+        }
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafafa; }
+        tbody td {
+            padding: .85rem 1.2rem;
+            font-size: .88rem;
+            color: #333;
+            white-space: nowrap;
+        }
+        tbody td.check-col { text-align: center; }
+        input[type="checkbox"] { accent-color: rgb(128,0,255); width: 15px; height: 15px; cursor: pointer; }
+
+        /* Badge origen */
+        .badge-nl {
+            display: inline-block;
+            padding: .18rem .55rem;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            background: rgba(128,0,255,.1);
+            color: rgb(128,0,255);
+            font-weight: 500;
+        }
+        .badge-dir {
+            display: inline-block;
+            padding: .18rem .55rem;
+            font-size: .6rem;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+            background: #f0f0f0;
+            color: #888;
+        }
+
+        /* Acciones de fila */
+        .btn-accion {
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            padding: .3rem .75rem;
+            border: 1px solid;
+            transition: background .2s, color .2s;
+            display: inline-block;
+            cursor: pointer;
+        }
+        .btn-editar { color: #111 !important; border-color: #111; background: transparent; }
+        .btn-editar:hover { background: #111; color: #f2f0eb !important; }
+        .btn-eliminar { color: #ff3b00 !important; border-color: #ff3b00; margin-left: .4rem; background: transparent; }
+        .btn-eliminar:hover { background: #ff3b00; color: #fff !important; }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            font-size: .8rem;
+            color: #bbb;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+
+        /* ─ Selección y buscador ─ */
+        .toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: .8rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .search-wrap {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            background: #fff;
+            padding: .4rem .8rem;
+            gap: .5rem;
+            flex: 1;
+            max-width: 300px;
+        }
+        .search-wrap svg { width: 14px; height: 14px; color: #aaa; flex-shrink: 0; }
+        .search-wrap input {
+            border: none; outline: none; background: transparent;
+            font-family: 'DM Sans', sans-serif; font-size: .85rem;
+            color: #111; width: 100%;
+        }
+        .search-wrap input::placeholder { color: #bbb; }
+        .sel-actions { display: flex; gap: .5rem; }
+        .btn-sel {
+            font-size: .62rem; letter-spacing: .12em; text-transform: uppercase;
+            padding: .38rem .75rem; border: 1px solid #ccc;
+            background: transparent; color: #777; cursor: pointer; transition: all .2s;
+        }
+        .btn-sel:hover { border-color: #111; color: #111; }
+
+        /* ─ Modal enviar newsletter ─ */
+        .modal-backdrop-nl {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,.55);
+            backdrop-filter: blur(4px);
+            z-index: 1050;
+            opacity: 0; visibility: hidden;
+            transition: opacity .3s, visibility .3s;
+        }
+        .modal-backdrop-nl.open { opacity: 1; visibility: visible; }
+
+        .modal-nl {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -46%);
+            z-index: 1060;
+            background: #fff;
+            border-top: 3px solid rgb(128,0,255);
+            width: 100%; max-width: 560px;
+            max-height: 90vh; overflow-y: auto;
+            opacity: 0; visibility: hidden;
+            transition: opacity .3s, transform .3s, visibility .3s;
+        }
+        .modal-nl.open { opacity: 1; visibility: visible; transform: translate(-50%, -50%); }
+
+        .modal-nl__head {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.3rem 1.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        .modal-nl__head h2 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 1.4rem; letter-spacing: .08em;
+        }
+        .modal-nl__head h2 span { color: rgb(128,0,255); }
+        .modal-nl__close {
+            background: none; border: none; cursor: pointer;
+            font-size: 1.1rem; color: #aaa; line-height: 1;
+            transition: color .2s;
+        }
+        .modal-nl__close:hover { color: #111; }
+
+        .modal-nl__body { padding: 1.5rem; }
+        .modal-nl__foot {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .dest-count { font-size: .72rem; color: #aaa; letter-spacing: .08em; text-transform: uppercase; }
+
+        /* Chips destinatarios */
+        .dest-box {
+            border: 1px solid #eee;
+            padding: .5rem .7rem;
+            min-height: 52px;
+            display: flex; flex-wrap: wrap; gap: .35rem;
+            margin-bottom: 1rem;
+            background: #fafafa;
+        }
+        .dest-chip {
+            display: inline-flex; align-items: center; gap: .3rem;
+            background: rgba(128,0,255,.1);
+            color: rgb(128,0,255);
+            font-size: .65rem; letter-spacing: .05em;
+            padding: .22rem .5rem;
+        }
+        .dest-chip button {
+            background: none; border: none; cursor: pointer;
+            color: inherit; opacity: .5; font-size: .75rem; line-height: 1; padding: 0;
+        }
+        .dest-chip button:hover { opacity: 1; }
+
+        /* Campos del modal */
+        .form-label-mc {
+            display: block;
+            font-size: .62rem; letter-spacing: .2em;
+            text-transform: uppercase; color: #aaa;
+            margin-bottom: .4rem;
+        }
+        .form-control-mc {
+            width: 100%; border: 1px solid #ddd;
+            padding: .6rem .9rem;
+            font-family: 'DM Sans', sans-serif; font-size: .88rem;
+            color: #111; outline: none; background: #fff;
+            transition: border-color .2s;
+            resize: none;
+        }
+        .form-control-mc:focus { border-color: rgb(128,0,255); }
+        .form-group-mc { margin-bottom: 1.1rem; }
+
+        /* Preview */
+        .preview-box {
+            background: #f8f8f8; border-left: 3px solid rgb(128,0,255);
+            padding: .8rem 1rem; margin-top: .8rem;
+        }
+        .preview-box__label {
+            font-size: .58rem; letter-spacing: .2em;
+            text-transform: uppercase; color: #aaa; margin-bottom: .4rem;
+        }
+        .preview-box__asunto { font-weight: 600; font-size: .88rem; margin-bottom: .3rem; }
+        .preview-box__body { font-size: .8rem; color: #555; white-space: pre-wrap; max-height: 70px; overflow: hidden; }
+
+        /* Toast */
+        .toast-mc {
+            position: fixed; bottom: 1.5rem; right: 1.5rem;
+            background: #111; color: #f2f0eb;
+            padding: .9rem 1.3rem;
+            font-size: .8rem; z-index: 9999;
+            opacity: 0; transform: translateY(10px);
+            transition: opacity .3s, transform .3s;
+            max-width: 300px; pointer-events: none;
+            border-left: 3px solid #ff3b00;
+        }
+        .toast-mc.show { opacity: 1; transform: translateY(0); }
+        .toast-mc.success { border-left-color: rgb(128,0,255); }
+        .toast-mc__title { font-weight: 600; margin-bottom: .15rem; }
+        .toast-mc__msg { opacity: .6; font-size: .75rem; }
+    </style>
+</head>
+<body>
+
+<!-- Navbar existente del proyecto -->
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <!-- Cabecera -->
+    <div class="page-header">
+        <div>
+            <h1>Clientes / Newsletter</h1>
+            <p>Gestión de suscriptores y clientes</p>
+        </div>
+        <div style="display:flex; gap:.6rem; flex-wrap:wrap; align-items:center;">
+            <button class="btn-mc-purple" id="btnEnviarNL" onclick="nlAdminAbrirModal()" disabled>
+                <!-- ícono sobre -->
+                <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M2 3h12a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>
+                    <path d="m1 4 7 5 7-5"/>
+                </svg>
+                Enviar Newsletter
+            </button>
+            <a href="/cliente/new" class="btn-mc">+ Nuevo</a>
+        </div>
+    </div>
+
+    <!-- Filtros: Todos / Solo Newsletter / Solo Directos -->
+    <div class="filter-tabs">
+        <button class="filter-tab active" id="tab-todos"     onclick="filtrarOrigen('todos')">
+            Todos <span id="cnt-todos" style="opacity:.5;"></span>
+        </button>
+        <button class="filter-tab" id="tab-newsletter" onclick="filtrarOrigen('newsletter')">
+            📧 Newsletter <span id="cnt-nl" style="opacity:.5;"></span>
+        </button>
+        <button class="filter-tab" id="tab-directo"   onclick="filtrarOrigen('directo')">
+            Directo <span id="cnt-dir" style="opacity:.5;"></span>
+        </button>
+    </div>
+
+    <!-- Barra: buscar + seleccionar -->
+    <div class="toolbar">
+        <div class="search-wrap">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <circle cx="6.5" cy="6.5" r="4.5"/><path d="m10 10 3 3"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Buscar por nombre o email…" oninput="nlFiltrarTabla(this.value)"/>
+        </div>
+        <div class="sel-actions">
+            <button class="btn-sel" onclick="nlSelAll()">Seleccionar todos</button>
+            <button class="btn-sel" onclick="nlDeselAll()">Limpiar</button>
+        </div>
+    </div>
+
+    <!-- Tabla -->
+    <div class="table-wrap">
+        <table id="tablaClientes">
+            <thead>
+                <tr>
+                    <th class="check-col">
+                        <input type="checkbox" id="checkAll" onchange="nlToggleAll(this)"/>
+                    </th>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Teléfono</th>
+                    <th>Ciudad</th>
+                    <th>Origen</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(clientes)}">
+                    <td colspan="8" class="empty">No hay clientes registrados</td>
+                </tr>
+                <tr th:each="c : ${clientes}"
+                    th:data-nombre="${c.razonSocial}"
+                    th:data-email="${c.email}"
+                    th:attr="data-origen=${c.origen != null ? c.origen : 'directo'}">
+
+                    <td class="check-col">
+                        <input type="checkbox" class="chk-row"
+                            th:data-id="${c.id}"
+                            th:data-nombre="${c.razonSocial}"
+                            th:data-email="${c.email != null ? c.email : ''}"
+                            onchange="nlActualizarSel()"/>
+                    </td>
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${c.razonSocial}"></td>
+                    <td th:text="${c.email != null ? c.email : '—'}"></td>
+                    <td th:text="${c.telefono != null ? c.telefono : '—'}"></td>
+                    <td th:text="${c.ciudad != null ? c.ciudad : '—'}"></td>
+                    <td>
+                        <span class="badge-nl"  th:if="${c.origen == 'newsletter'}">Newsletter</span>
+                        <span class="badge-dir" th:unless="${c.origen == 'newsletter'}">Directo</span>
+                    </td>
+                    <td>
+                        <a th:href="@{/cliente/edit/{id}(id=${c.id})}"
+                           class="btn-accion btn-editar">Editar</a>
+                        <a th:href="@{/cliente/delete/{id}(id=${c.id})}"
+                           class="btn-accion btn-eliminar"
+                           onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div><!-- /page-wrapper -->
+
+<!-- ══════════════════════════════════════════
+     MODAL — ENVIAR NEWSLETTER
+     ══════════════════════════════════════════ -->
+<div class="modal-backdrop-nl" id="nlAdminBackdrop" onclick="nlAdminCerrarModal()"></div>
+
+<div class="modal-nl" id="nlAdminModal" role="dialog" aria-modal="true">
+    <div class="modal-nl__head">
+        <h2>Enviar <span>Newsletter</span></h2>
+        <button class="modal-nl__close" onclick="nlAdminCerrarModal()" aria-label="Cerrar">✕</button>
+    </div>
+
+    <div class="modal-nl__body">
+
+        <!-- Destinatarios -->
+        <div class="form-group-mc">
+            <label class="form-label-mc">Destinatarios seleccionados</label>
+            <div class="dest-box" id="nlDestBox"></div>
+        </div>
+
+        <!-- Asunto -->
+        <div class="form-group-mc">
+            <label class="form-label-mc" for="nlAsunto">Asunto *</label>
+            <input type="text" id="nlAsunto" class="form-control-mc"
+                   placeholder="ej. Nueva colección disponible 🔥"
+                   oninput="nlAdminPreview()"/>
+        </div>
+
+        <!-- Mensaje -->
+        <div class="form-group-mc">
+            <label class="form-label-mc" for="nlCuerpo">Mensaje *</label>
+            <textarea id="nlCuerpo" class="form-control-mc" rows="5"
+                      placeholder="Escribe el mensaje para la comunidad Monkey…"
+                      oninput="nlAdminPreview()"></textarea>
+        </div>
+
+        <!-- Preview en tiempo real -->
+        <div class="preview-box" id="nlPreview" style="display:none;">
+            <div class="preview-box__label">// Preview del mensaje</div>
+            <div class="preview-box__asunto" id="nlPreviewAsunto"></div>
+            <div class="preview-box__body"   id="nlPreviewBody"></div>
+        </div>
+
+    </div>
+
+    <div class="modal-nl__foot">
+        <span class="dest-count" id="nlDestCount">0 destinatarios</span>
+        <div style="display:flex; gap:.5rem;">
+            <button class="btn-accion btn-editar" onclick="nlAdminCerrarModal()">Cancelar</button>
+            <button class="btn-mc-purple" id="nlBtnSend" onclick="nlAdminEnviar()">
+                Enviar ahora
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-mc" id="toastMc">
+    <div class="toast-mc__title" id="toastMcTitle"></div>
+    <div class="toast-mc__msg"   id="toastMcMsg"></div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+<script>
+/* ── Estado ── */
+let nlSel = [];              // [{id, nombre, email}]
+let origenActivo = 'todos';  // filtro activo
+
+/* ════════════════════════════
+   INICIALIZACIÓN — contadores
+   ════════════════════════════ */
+(function initContadores() {
+    const rows  = document.querySelectorAll('#tablaClientes tbody tr[data-origen]');
+    let todos = rows.length, nl = 0, dir = 0;
+    rows.forEach(r => {
+        if (r.dataset.origen === 'newsletter') nl++;
+        else dir++;
+    });
+    document.getElementById('cnt-todos').textContent = `(${todos})`;
+    document.getElementById('cnt-nl').textContent    = `(${nl})`;
+    document.getElementById('cnt-dir').textContent   = `(${dir})`;
+})();
+
+/* ════════════════════════════
+   FILTROS POR ORIGEN
+   ════════════════════════════ */
+function filtrarOrigen(origen) {
+    origenActivo = origen;
+
+    // Tabs UI
+    document.querySelectorAll('.filter-tab').forEach(t => {
+        t.classList.remove('active', 'active-nl');
+    });
+    const tab = document.getElementById('tab-' + origen);
+    if (tab) {
+        tab.classList.add(origen === 'newsletter' ? 'active-nl' : 'active');
+    }
+
+    // Filas
+    document.querySelectorAll('#tablaClientes tbody tr[data-origen]').forEach(row => {
+        const match =
+            origen === 'todos' ||
+            (origen === 'newsletter' && row.dataset.origen === 'newsletter') ||
+            (origen === 'directo'    && row.dataset.origen !== 'newsletter');
+        row.style.display = match ? '' : 'none';
+    });
+
+    nlDeselAll();
+    document.getElementById('searchInput').value = '';
+}
+
+/* ════════════════════════════
+   BÚSQUEDA POR TEXTO
+   ════════════════════════════ */
+function nlFiltrarTabla(q) {
+    q = q.toLowerCase();
+    document.querySelectorAll('#tablaClientes tbody tr[data-origen]').forEach(row => {
+        // Respeta el filtro de origen activo
+        const origenOk =
+            origenActivo === 'todos' ||
+            (origenActivo === 'newsletter' && row.dataset.origen === 'newsletter') ||
+            (origenActivo === 'directo'    && row.dataset.origen !== 'newsletter');
+        const texto = ((row.dataset.nombre || '') + ' ' + (row.dataset.email || '')).toLowerCase();
+        row.style.display = (origenOk && texto.includes(q)) ? '' : 'none';
+    });
+}
+
+/* ════════════════════════════
+   CHECKBOXES
+   ════════════════════════════ */
+function nlToggleAll(master) {
+    // Solo afecta filas visibles
+    document.querySelectorAll('#tablaClientes tbody tr:not([style*="none"]) .chk-row').forEach(cb => {
+        cb.checked = master.checked;
+    });
+    nlActualizarSel();
+}
+
+function nlSelAll() {
+    document.getElementById('checkAll').checked = true;
+    nlToggleAll({ checked: true });
+}
+
+function nlDeselAll() {
+    document.getElementById('checkAll').checked = false;
+    document.querySelectorAll('.chk-row').forEach(cb => cb.checked = false);
+    nlActualizarSel();
+}
+
+function nlActualizarSel() {
+    nlSel = [];
+    document.querySelectorAll('.chk-row:checked').forEach(cb => {
+        nlSel.push({ id: cb.dataset.id, nombre: cb.dataset.nombre, email: cb.dataset.email });
+    });
+    document.getElementById('btnEnviarNL').disabled = nlSel.length === 0;
+}
+
+/* ════════════════════════════
+   MODAL ADMIN — ENVIAR
+   ════════════════════════════ */
+function nlAdminAbrirModal() {
+    if (!nlSel.length) return;
+    nlRenderChips();
+    document.getElementById('nlAdminBackdrop').classList.add('open');
+    document.getElementById('nlAdminModal').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('nlAsunto').focus();
+}
+
+function nlAdminCerrarModal() {
+    document.getElementById('nlAdminBackdrop').classList.remove('open');
+    document.getElementById('nlAdminModal').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function nlRenderChips() {
+    const box = document.getElementById('nlDestBox');
+    const cnt = document.getElementById('nlDestCount');
+    box.innerHTML = nlSel.map(s =>
+        `<span class="dest-chip">
+            ${escHtml(s.nombre)}
+            <button onclick="nlQuitarChip('${s.id}',this)" title="Quitar">✕</button>
+         </span>`
+    ).join('');
+    cnt.textContent = `${nlSel.length} destinatario${nlSel.length !== 1 ? 's' : ''}`;
+}
+
+function nlQuitarChip(id, btn) {
+    nlSel = nlSel.filter(s => s.id !== id);
+    btn.closest('.dest-chip').remove();
+    document.getElementById('nlDestCount').textContent =
+        `${nlSel.length} destinatario${nlSel.length !== 1 ? 's' : ''}`;
+    if (!nlSel.length) nlAdminCerrarModal();
+}
+
+/* Preview en tiempo real */
+function nlAdminPreview() {
+    const asunto = document.getElementById('nlAsunto').value.trim();
+    const cuerpo = document.getElementById('nlCuerpo').value.trim();
+    const panel  = document.getElementById('nlPreview');
+    if (!asunto && !cuerpo) { panel.style.display = 'none'; return; }
+    panel.style.display = '';
+    document.getElementById('nlPreviewAsunto').textContent = asunto || '(sin asunto)';
+    document.getElementById('nlPreviewBody').textContent   = cuerpo || '(sin mensaje)';
+}
+
+/* Envío simulado */
+async function nlAdminEnviar() {
+    const asunto = document.getElementById('nlAsunto').value.trim();
+    const cuerpo = document.getElementById('nlCuerpo').value.trim();
+    if (!asunto || !cuerpo) {
+        nlToast('Campos vacíos', 'Completa el asunto y el mensaje.', false);
+        return;
+    }
+
+    const btn = document.getElementById('nlBtnSend');
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+
+    try {
+        const res  = await fetch('/cliente/mensajes/enviar', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ asunto, mensaje: cuerpo, destinatarios: nlSel }),
+        });
+        const data = await res.json();
+
+        nlAdminCerrarModal();
+
+        if (data.ok) {
+            nlToast('¡Enviado!', `"${data.asunto}" — ${data.total} destinatario(s).`, true);
+            // Limpia form
+            document.getElementById('nlAsunto').value = '';
+            document.getElementById('nlCuerpo').value = '';
+            document.getElementById('nlPreview').style.display = 'none';
+            nlDeselAll();
+        } else {
+            nlToast('Error', data.msg || 'No se pudo enviar.', false);
+        }
+    } catch {
+        nlToast('Error', 'No se pudo conectar con el servidor.', false);
+    } finally {
+        btn.disabled = false;
+        btn.textContent = 'Enviar ahora';
+    }
+}
+
+/* ════════════════════════════
+   TOAST
+   ════════════════════════════ */
+function nlToast(titulo, msg, success = false) {
+    const el = document.getElementById('toastMc');
+    document.getElementById('toastMcTitle').textContent = titulo;
+    document.getElementById('toastMcMsg').textContent   = msg;
+    el.classList.toggle('success', success);
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 4500);
+}
+
+/* ════════════════════════════
+   ESCAPE
+   ════════════════════════════ */
+document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') nlAdminCerrarModal();
+});
+
+/* ─ Utilidad ─ */
+function escHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;').replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>

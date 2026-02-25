@@ -1,0 +1,63 @@
+package com.cibertec.monkey.controller;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.cibertec.monkey.entity.Producto;
+import com.cibertec.monkey.service.ProductoService;
+import com.cibertec.monkey.repository.CategoriaRepository;
+
+@Controller
+@RequiredArgsConstructor
+@RequestMapping("/productos")
+public class ProductoController {
+
+    private final ProductoService productoService;
+    private final CategoriaRepository categoriaRepository;
+
+    @GetMapping
+    public String listar(Model model) {
+        model.addAttribute("productos", productoService.listar());
+        return "producto/lista";
+    }
+
+    @GetMapping("/nuevo")
+    public String nuevo(Model model) {
+        model.addAttribute("producto", new Producto());
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        return "producto/form";
+    }
+
+    @PostMapping("/guardar")
+    public String guardar(@ModelAttribute Producto producto,
+                          @RequestParam("idcate") String idcate) {
+
+        Categoria categoria = categoriaRepository.findById(idcate).orElse(null);
+        producto.setCategoria(categoria);
+
+        productoService.guardar(producto);
+
+        return "redirect:/productos";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Integer id, Model model) {
+
+        Producto producto = productoService.buscarPorId(id);
+
+        model.addAttribute("producto", producto);
+        model.addAttribute("categorias", categoriaRepository.findAll());
+        model.addAttribute("categoriaSeleccionada",
+                producto.getCategoria() != null ? producto.getCategoria().getIdcate() : "");
+
+        return "producto/form";
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        productoService.eliminar(id);
+        return "redirect:/productos";
+    }
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<nav th:fragment="navbar"
+     style="background:#111; border-bottom:3px solid #ff3b00; padding:0 2rem;
+            display:flex; align-items:center; justify-content:space-between;
+            height:58px; position:sticky; top:0; z-index:999; font-family:'DM Sans',sans-serif;">
+
+    <!-- Marca -->
+    <a th:href="@{/}"
+       style="font-family:'Bebas Neue',sans-serif; font-size:1.4rem; letter-spacing:.12em;
+              color:#f2f0eb !important; text-decoration:none;">
+        Monkey Clothing
+    </a>
+
+    <!-- Links -->
+    <div style="display:flex; height:100%;">
+		<a th:href="@{/dashboard}"
+		   style="display:inline-flex; align-items:center; padding:0 1.1rem; height:58px;
+		          font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+		          color:#aaa !important; text-decoration:none !important;
+		          border-bottom:3px solid transparent; margin-bottom:-3px;"
+		   onmouseover="this.style.color='#f2f0eb'; this.style.borderBottomColor='#ff3b00';"
+		   onmouseout="this.style.color='#aaa'; this.style.borderBottomColor='transparent';">
+		    Dashboard
+		</a>
+		
+        <a th:href="@{/usuario}"
+           style="display:inline-flex; align-items:center; padding:0 1.1rem; height:58px;
+                  font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+                  color:#aaa !important; text-decoration:none !important;
+                  border-bottom:3px solid transparent; margin-bottom:-3px;"
+           onmouseover="this.style.color='#f2f0eb'; this.style.borderBottomColor='#ff3b00';"
+           onmouseout="this.style.color='#aaa'; this.style.borderBottomColor='transparent';">
+            Usuarios
+        </a>
+        <a th:href="@{/cliente}"
+           style="display:inline-flex; align-items:center; padding:0 1.1rem; height:58px;
+                  font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+                  color:#aaa !important; text-decoration:none !important;
+                  border-bottom:3px solid transparent; margin-bottom:-3px;"
+           onmouseover="this.style.color='#f2f0eb'; this.style.borderBottomColor='#ff3b00';"
+           onmouseout="this.style.color='#aaa'; this.style.borderBottomColor='transparent';">
+            Clientes
+        </a>
+        <a th:href="@{/productos}"
+           style="display:inline-flex; align-items:center; padding:0 1.1rem; height:58px;
+                  font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+                  color:#aaa !important; text-decoration:none !important;
+                  border-bottom:3px solid transparent; margin-bottom:-3px;"
+           onmouseover="this.style.color='#f2f0eb'; this.style.borderBottomColor='#ff3b00';"
+           onmouseout="this.style.color='#aaa'; this.style.borderBottomColor='transparent';">
+            Productos
+        </a>
+        <a th:href="@{/venta}"
+           style="display:inline-flex; align-items:center; padding:0 1.1rem; height:58px;
+                  font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+                  color:#aaa !important; text-decoration:none !important;
+                  border-bottom:3px solid transparent; margin-bottom:-3px;"
+           onmouseover="this.style.color='#f2f0eb'; this.style.borderBottomColor='#ff3b00';"
+           onmouseout="this.style.color='#aaa'; this.style.borderBottomColor='transparent';">
+            Ventas
+        </a>
+    </div>
+
+    <!-- Salir -->
+    <a th:href="@{/}"
+       style="font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+              color:#aaa !important; text-decoration:none !important;
+              padding:.4rem .9rem; border:1px solid #444;"
+       onmouseover="this.style.color='#ff3b00'; this.style.borderColor='#ff3b00';"
+       onmouseout="this.style.color='#aaa'; this.style.borderColor='#444';">
+        Salir
+    </a>
+
+</nav>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

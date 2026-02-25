@@ -1,0 +1,86 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import com.cibertec.monkey.repository.ClienteRepository;
+import com.cibertec.monkey.service.EmailService;
+
+@Controller
+public class NewsletterController {
+
+    @Autowired private EmailService emailService;
+    @Autowired private ClienteRepository clienteRepository;
+
+    @GetMapping("/newsletter")
+    public String vistaNewsletter(Model model) {
+        model.addAttribute("totalSuscriptores",
+            clienteRepository.findEmailsByOrigen("newsletter").size());
+        return "newsletter";
+    }
+
+    // Enviar a todos los suscriptores
+    @PostMapping("/newsletter/enviar-todos")
+    public String enviarATodos(@RequestParam("asunto") String asunto,
+                               @RequestParam("contenido") String contenido,
+                               RedirectAttributes redirectAttrs) {
+        String html = construirHtml(asunto, contenido);
+        emailService.enviarATodos(asunto, html);
+        redirectAttrs.addFlashAttribute("mensaje", "Correo enviado a todos los suscriptores.");
+        return "redirect:/newsletter";
+    }
+
+    // Enviar a un suscriptor individual
+    @PostMapping("/newsletter/enviar-uno")
+    public String enviarAUno(@RequestParam("email") String email,
+                             @RequestParam("asunto") String asunto,
+                             @RequestParam("contenido") String contenido,
+                             RedirectAttributes redirectAttrs) {
+        String html = construirHtml(asunto, contenido);
+        emailService.enviarAUno(email, asunto, html);
+        redirectAttrs.addFlashAttribute("mensaje", "Correo enviado a " + email);
+        return "redirect:/newsletter";
+    }
+
+    // Construye el HTML del correo con el diseño de Monkey Clothing
+    private String construirHtml(String asunto, String contenido) {
+        return """
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <meta charset="UTF-8"/>
+              <style>
+                body { margin:0; background:#f2f0eb; font-family:'DM Sans',sans-serif; }
+                .wrap { max-width:600px; margin:0 auto; background:#fff; }
+                .header { background:#111; padding:28px 32px; border-bottom:3px solid #ff3b00; }
+                .header h1 { margin:0; font-size:1.6rem; letter-spacing:.12em;
+                              color:#f2f0eb; font-family:Georgia,serif; }
+                .body { padding:32px; color:#333; line-height:1.7; font-size:.95rem; }
+                .body h2 { font-size:1.2rem; color:#111; margin-bottom:1rem; }
+                .footer { background:#111; padding:20px 32px;
+                          font-size:.72rem; color:#666; letter-spacing:.1em;
+                          text-transform:uppercase; }
+              </style>
+            </head>
+            <body>
+              <div class="wrap">
+                <div class="header">
+                  <h1>MONKEY CLOTHING</h1>
+                </div>
+                <div class="body">
+                  <h2>""" + asunto + """
+                  </h2>
+                  <p>""" + contenido.replace("\n", "<br/>") + """
+                  </p>
+                </div>
+                <div class="footer">
+                  © Monkey Clothing · Lima, Perú · Para dejar de recibir estos correos, contáctanos.
+                </div>
+              </div>
+            </body>
+            </html>
+            """;
+    }
+}

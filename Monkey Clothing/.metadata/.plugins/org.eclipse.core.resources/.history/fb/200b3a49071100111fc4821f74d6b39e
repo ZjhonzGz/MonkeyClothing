@@ -1,0 +1,51 @@
+package com.cibertec.monkey.repository;
+
+import java.math.BigDecimal;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import com.cibertec.monkey.dto.ProductoStockDTO;
+import com.cibertec.monkey.dto.VentaResumenDTO;
+import com.cibertec.monkey.entity.Ventas;
+
+@Repository
+public interface DashboardRepository extends JpaRepository<Ventas, Long> {
+
+    // Cantidad de ventas realizadas hoy
+    @Query(value = "SELECT COUNT(*) FROM ventas WHERE DATE(fecha) = CURDATE()", nativeQuery = true)
+    Long contarVentasHoy();
+
+    // Total facturado en el mes actual
+    @Query(value = "SELECT COALESCE(SUM(total), 0) FROM ventas " +
+                   "WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())",
+           nativeQuery = true)
+    BigDecimal totalIngresosMes();
+
+    // Ganancia neta del mes actual
+    @Query(value = "SELECT COALESCE(SUM(ganancia), 0) FROM ventas " +
+                   "WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())",
+           nativeQuery = true)
+    BigDecimal totalGananciaMes();
+
+    // Cantidad de productos con stock bajo
+    @Query(value = "SELECT COUNT(*) FROM producto WHERE stock <= :umbral", nativeQuery = true)
+    Long contarProductosStockBajo(@Param("umbral") int umbral);
+
+    // Lista de productos con stock bajo ordenados por stock ascendente
+    @Query(value = "SELECT p.descripcion AS descripcion, c.descripcion AS categoria, p.stock AS stock " +
+                   "FROM producto p INNER JOIN categorias c ON p.idcate = c.idcate " +
+                   "WHERE p.stock <= :umbral ORDER BY p.stock ASC",
+           nativeQuery = true)
+    List<ProductoStockDTO> listarProductosStockBajo(@Param("umbral") int umbral);
+
+    // Últimas N ventas con cliente y asesor
+    @Query(value = "SELECT v.nroventa, v.fecha, c.razon_soc AS cliente, a.nombres AS asesor, v.total " +
+                   "FROM ventas v " +
+                   "INNER JOIN cliente c ON v.idclie = c.idclie " +
+                   "INNER JOIN asesor_vta a ON v.codasesor = a.codasesor " +
+                   "ORDER BY v.fecha DESC LIMIT :limite",
+           nativeQuery = true)
+    List<VentaResumenDTO> ultimasVentas(@Param("limite") int limite);
+}

@@ -1,0 +1,54 @@
+package com.cibertec.monkey.entity;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "producto")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Producto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer idproducto;
+
+    @Column(nullable = false, unique = true, length = 50)
+    private String codigo;
+
+    @Column(nullable = false, length = 150)
+    private String descripcion;
+
+    @Column(name = "precio_compra", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precioCompra;
+
+    @Column(name = "precio_venta", nullable = false, precision = 10, scale = 2)
+    private BigDecimal precioVenta;
+
+    @Column(nullable = false)
+    private Integer stock;
+
+    /* ============================
+       RELACIÓN MUCHOS A UNO
+       MUCHOS productos → UNA categoría
+       ============================ */
+    @ManyToOne
+    @JoinColumn(name = "idcate", nullable = false)
+    private Categoria categoria;
+
+    @Column(name = "fecha_registro", insertable = false, updatable = false)
+    private LocalDateTime fechaRegistro;
+    
+    
+    public boolean sinExistencia() {
+        return this.stock <= 0;
+    }
+
+    public void restarExistencia(int cantidad) {
+        this.stock -= cantidad;
+    }
+}

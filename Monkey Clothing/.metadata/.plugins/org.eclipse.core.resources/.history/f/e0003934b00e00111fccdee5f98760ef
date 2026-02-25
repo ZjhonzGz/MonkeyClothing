@@ -1,0 +1,39 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Controller
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    // =============================
+    // MUESTRA LOGIN AL ENTRAR
+    // =============================
+    @GetMapping("/")
+    public String login(){
+        return "login";
+    }
+
+    // =============================
+    // PROCESA LOGIN
+    // =============================
+    @PostMapping("/login")
+    public String iniciarSesion(Model model, @ModelAttribute Usuario usuario) {
+
+        boolean valido = usuarioService.login(usuario);
+
+        if(valido){
+            return "redirect:/producto/listar"; // entra al sistema
+        }else{
+            return "error_login";
+        }
+    }
+}

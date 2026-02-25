@@ -1,0 +1,31 @@
+package com.cibertec.monkey.service;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import com.cibertec.monkey.entity.Producto;
+import com.cibertec.monkey.repository.ProductoRepository;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class ProductoService {
+
+    private final ProductoRepository productoRepository;
+
+    public List<Producto> listar() {
+        return productoRepository.findAll();
+    }
+
+    public Producto guardar(Producto producto) {
+        return productoRepository.save(producto);
+    }
+
+    public Producto buscarPorId(Integer id) {
+        return productoRepository.findById(id).orElse(null);
+    }
+
+    public void eliminar(Integer id) {
+        productoRepository.deleteById(id);
+    }
+}

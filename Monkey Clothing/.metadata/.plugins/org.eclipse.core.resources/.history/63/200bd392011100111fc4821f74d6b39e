@@ -1,0 +1,39 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import com.cibertec.monkey.entity.AsesorVenta;
+import com.cibertec.monkey.service.AsesorVentaService;
+
+@Controller
+public class AsesorVentaController {
+
+    @Autowired
+    private AsesorVentaService asesorVentaService;
+
+    @GetMapping("/asesor/new")
+    public String createForm(Model model) {
+        model.addAttribute("asesor", new AsesorVenta());
+        return "create_asesor";
+    }
+
+    @PostMapping("/asesor")
+    public String save(@ModelAttribute("asesor") AsesorVenta asesor) {
+        asesorVentaService.guardar(asesor);
+        return "redirect:/usuario";
+    }
+
+    @GetMapping("/asesor/edit/{id}")
+    public String editForm(@PathVariable Integer id, Model model) {
+        model.addAttribute("asesor", asesorVentaService.buscarById(id));
+        return "create_asesor";
+    }
+
+    @GetMapping("/asesor/delete/{id}")
+    public String delete(@PathVariable Integer id) {
+        asesorVentaService.eliminar(id);
+        return "redirect:/usuario";
+    }
+}

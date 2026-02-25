@@ -1,0 +1,5 @@
+package com.cibertec.monkey.repository;
+
+public class VentaRepository {
+
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Clientes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #f2f0eb;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            color: #111;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: .08em;
+            color: #111;
+            line-height: 1;
+        }
+
+        .page-header p {
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: .3rem;
+        }
+
+        .btn-mc {
+            background: #111;
+            color: #f2f0eb !important;
+            border: none;
+            padding: .65rem 1.4rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            text-decoration: none !important;
+            transition: background .2s;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .btn-mc:hover { background: #ff3b00; color: #fff !important; }
+
+        .table-wrap {
+            background: #fff;
+            border-top: 3px solid #ff3b00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr { border-bottom: 1px solid #eee; }
+
+        thead th {
+            font-size: .6rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: #aaa;
+            padding: 1rem 1.2rem;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f4f4f4;
+            transition: background .15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafafa; }
+
+        tbody td {
+            padding: .9rem 1.2rem;
+            font-size: .88rem;
+            color: #333;
+        }
+
+        .btn-accion {
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            padding: .3rem .75rem;
+            border: 1px solid;
+            transition: background .2s, color .2s;
+            display: inline-block;
+        }
+
+        .btn-editar { color: #111 !important; border-color: #111; }
+        .btn-editar:hover { background: #111; color: #f2f0eb !important; }
+
+        .btn-eliminar { color: #ff3b00 !important; border-color: #ff3b00; margin-left: .4rem; }
+        .btn-eliminar:hover { background: #ff3b00; color: #fff !important; }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            font-size: .8rem;
+            color: #bbb;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <div>
+            <h1>Clientes</h1>
+            <p>Gestión de clientes registrados</p>
+        </div>
+        <a href="/cliente/new" class="btn-mc">+ Nuevo Cliente</a>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Razón Social</th>
+                    <th>Ciudad</th>
+                    <th>Dirección</th>
+                    <th>Teléfono</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(clientes)}">
+                    <td colspan="6" class="empty">No hay clientes registrados</td>
+                </tr>
+                <tr th:each="c : ${clientes}">
+                    <td th:text="${c.id}"></td>
+                    <td th:text="${c.razonSocial}"></td>
+                    <td th:text="${c.ciudad}"></td>
+                    <td th:text="${c.direccion}"></td>
+                    <td th:text="${c.telefono}"></td>
+                    <td>
+                        <a th:href="@{/cliente/edit/{id}(id=${c.id})}"
+                           class="btn-accion btn-editar">Editar</a>
+                        <a th:href="@{/cliente/delete/{id}(id=${c.id})}"
+                           class="btn-accion btn-eliminar"
+                           onclick="return confirm('¿Eliminar cliente?')">Eliminar</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+package com.cibertec.monkey.service.impl;
+
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.repository.UsuarioRepository;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Service
+@RequiredArgsConstructor
+public class UsuarioServiceImpl implements UsuarioService {
+
+    private final UsuarioRepository usuarioRepository;
+
+    @Override
+    public Usuario validarLogin(String usuario, String clave) {
+
+        return usuarioRepository.findByUsuario(usuario)
+                .filter(u -> u.getClave().equals(clave))
+                .orElse(null);
+    }
+}

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Ventas</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #f2f0eb;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            color: #111;
+        }
+
+        .page-wrapper {
+            max-width: 1100px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-bottom: 1.8rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: .08em;
+            color: #111;
+            line-height: 1;
+        }
+
+        .page-header p {
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: .3rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: .8rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .btn-mc {
+            border: none;
+            padding: .65rem 1.4rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            text-decoration: none !important;
+            transition: background .2s;
+            white-space: nowrap;
+            display: inline-block;
+        }
+
+        .btn-mc-dark { background: #111; color: #f2f0eb !important; }
+        .btn-mc-dark:hover { background: #ff3b00; color: #fff !important; }
+
+        .btn-mc-outline {
+            background: transparent;
+            color: #111 !important;
+            border: 1px solid #111;
+        }
+        .btn-mc-outline:hover { background: #111; color: #f2f0eb !important; }
+
+        .table-wrap {
+            background: #fff;
+            border-top: 3px solid #ff3b00;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead tr { border-bottom: 1px solid #eee; }
+
+        thead th {
+            font-size: .6rem;
+            letter-spacing: .25em;
+            text-transform: uppercase;
+            color: #aaa;
+            padding: 1rem 1.2rem;
+            font-weight: 400;
+            text-align: left;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #f4f4f4;
+            transition: background .15s;
+        }
+
+        tbody tr:last-child { border-bottom: none; }
+        tbody tr:hover { background: #fafafa; }
+
+        tbody td {
+            padding: .9rem 1.2rem;
+            font-size: .88rem;
+            color: #333;
+        }
+
+        .precio { font-weight: 500; }
+
+        .total-cell {
+            font-weight: 500;
+            color: #111;
+        }
+
+        .btn-accion {
+            font-size: .6rem;
+            letter-spacing: .15em;
+            text-transform: uppercase;
+            text-decoration: none !important;
+            padding: .3rem .75rem;
+            border: 1px solid #111;
+            color: #111 !important;
+            transition: background .2s, color .2s;
+            display: inline-block;
+        }
+
+        .btn-accion:hover { background: #111; color: #f2f0eb !important; }
+
+        .empty {
+            text-align: center;
+            padding: 3rem;
+            font-size: .8rem;
+            color: #bbb;
+            letter-spacing: .1em;
+            text-transform: uppercase;
+        }
+    </style>
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <div>
+            <h1>Ventas</h1>
+            <p>Historial de ventas registradas</p>
+        </div>
+        <div class="header-actions">
+            <a th:href="@{/reportes/ventas/pdf}" target="_blank" class="btn-mc btn-mc-outline">
+                📄 Reporte PDF
+            </a>
+            <a th:href="@{/venta/new}" class="btn-mc btn-mc-dark">+ Nueva Venta</a>
+        </div>
+    </div>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Nro</th>
+                    <th>Fecha</th>
+                    <th>Cliente</th>
+                    <th>Asesor</th>
+                    <th>Subtotal</th>
+                    <th>IGV</th>
+                    <th>Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:if="${#lists.isEmpty(ventas)}">
+                    <td colspan="8" class="empty">No hay ventas registradas</td>
+                </tr>
+                <tr th:each="item : ${ventas}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.fecha}"></td>
+                    <td th:text="${item.cliente.razonSocial}"></td>
+                    <td th:text="${item.asesorVenta.nombres}"></td>
+                    <td class="precio" th:text="'S/ ' + ${item.subtotal}"></td>
+                    <td class="precio" th:text="'S/ ' + ${item.igv}"></td>
+                    <td class="total-cell" th:text="'S/ ' + ${item.total}"></td>
+                    <td>
+                        <a th:href="@{/venta/verDetalle/{id}(id=${item.id})}"
+                           class="btn-accion">Ver Detalle</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

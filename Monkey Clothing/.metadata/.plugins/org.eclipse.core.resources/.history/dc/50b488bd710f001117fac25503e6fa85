@@ -1,0 +1,73 @@
+package com.cibertec.monkey.controller;
+
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.HashMap;
+import java.util.Map;
+import javax.sql.DataSource;
+import jakarta.servlet.http.HttpServletResponse;
+import net.sf.jasperreports.engine.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+@Controller
+@RequestMapping("/reportes")
+public class ReporteController {
+
+    @Autowired
+    private DataSource dataSource;
+
+    @GetMapping("/inventario/pdf")
+    public void reporteInventario(HttpServletResponse response) throws Exception {
+        // cargar el archivo .jasper desde resources/report/
+        InputStream archivo = getClass()
+            .getResourceAsStream("/reportes/Reporte_Inventario.jasper");
+
+        // parámetros opcionales del reporte
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "Reporte de Inventario - Monkey Clothing");
+
+        // conexión a la base de datos
+        Connection conexion = dataSource.getConnection();
+
+        // compilar y llenar el reporte
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+            archivo, parametros, conexion);
+
+        // configurar la respuesta como PDF
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", 
+            "inline; filename=inventario.pdf");
+
+        // exportar a PDF
+        JasperExportManager.exportReportToPdfStream(
+            jasperPrint, response.getOutputStream());
+
+        conexion.close();
+    }
+
+    @GetMapping("/ventas/pdf")
+    public void reporteVentas(HttpServletResponse response) throws Exception {
+        InputStream archivo = getClass()
+            .getResourceAsStream("/reportes/Reporte_Ventas.jasper");
+
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("titulo", "Reporte de Ventas - Monkey Clothing");
+
+        Connection conexion = dataSource.getConnection();
+
+        JasperPrint jasperPrint = JasperFillManager.fillReport(
+            archivo, parametros, conexion);
+
+        response.setContentType("application/pdf");
+        response.setHeader("Content-Disposition", 
+            "inline; filename=ventas.pdf");
+
+        JasperExportManager.exportReportToPdfStream(
+            jasperPrint, response.getOutputStream());
+
+        conexion.close();
+    }
+}

@@ -1,0 +1,104 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.service.RolService;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Controller
+public class UsuarioController {
+
+    @Autowired
+    private UsuarioService usuarioService;
+
+    @Autowired
+    private RolService rolService;
+
+    @GetMapping("/")
+    public String login() {
+        return "login";
+    }
+
+    @GetMapping("/register")
+    public String showRegistrationForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        return "register";
+    }
+
+    @PostMapping("/register/save")
+    public String registration(@ModelAttribute("usuario") Usuario usuario,
+                               BindingResult result, Model model) {
+
+        Usuario existingUser = usuarioService.buscarByUsuario(usuario.getUsuario());
+
+        if (usuario.getNombres() == null || usuario.getNombres().isEmpty())
+            result.rejectValue("nombres", null, "Ingresar nombres");
+
+        if (usuario.getApellidos() == null || usuario.getApellidos().isEmpty())
+            result.rejectValue("apellidos", null, "Ingresar apellidos");
+
+        if (usuario.getUsuario() == null || usuario.getUsuario().isEmpty())
+            result.rejectValue("usuario", null, "Ingresar usuario");
+
+        if (usuario.getClave() == null || usuario.getClave().isEmpty())
+            result.rejectValue("clave", null, "Ingresar clave");
+
+        if (existingUser != null && existingUser.getUsuario() != null
+                && !existingUser.getUsuario().isEmpty())
+            result.rejectValue("usuario", null, "Ya existe una cuenta con este usuario");
+
+        if (result.hasErrors()) {
+            model.addAttribute("usuario", usuario);
+            return "register";
+        }
+
+        usuario.setRol(rolService.buscarById(2));
+        usuarioService.guardarUsuario(usuario);
+        return "redirect:/register?success";
+    }
+
+    @PostMapping("/login")
+    public String iniciarSesion(Model model,
+                                @RequestParam("usuario") String usuario,
+                                @RequestParam("clave") String clave) {
+
+        Usuario u = new Usuario();
+        u.setUsuario(usuario);
+        u.setClave(clave);
+
+        boolean band = usuarioService.login(u);
+        System.out.println("band --> " + band);
+
+        if (band) {
+            model.addAttribute("usuarios", usuarioService.listarTodosUsuario());
+            model.addAttribute("rolList", rolService.listarTodosRol());
+            return "usuario/index";
+        } else {
+            return "error_login";
+        }
+    }
+    
+    @GetMapping("/usuario/new")
+    public String createUsuarioForm(Model model) {
+        model.addAttribute("usuario", new Usuario());
+        model.addAttribute("rolList", rolService.listarTodosRol());
+        return "usuario/create";
+    }
+
+    @PostMapping("/usuario")
+    public String saveUsuario(@ModelAttribute("usuario") Usuario usuario) {
+        usuarioService.guardarUsuario(usuario);
+        return "redirect:/usuario";
+    }
+
+    @GetMapping("/usuario")
+    public String listUsuarios(Model model) {
+        model.addAttribute("usuarios", usuarioService.listarTodosUsuario());
+        model.addAttribute("rolList", rolService.listarTodosRol());
+        return "usuario/index";
+    }
+}

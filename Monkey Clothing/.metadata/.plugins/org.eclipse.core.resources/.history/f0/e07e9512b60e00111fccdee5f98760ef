@@ -1,0 +1,5 @@
+package com.cibertec.monkey.service.impl;
+
+public interface ClienteServiceImpl {
+
+}

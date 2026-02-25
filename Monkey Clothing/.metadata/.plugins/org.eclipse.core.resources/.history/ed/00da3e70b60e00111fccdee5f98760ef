@@ -1,0 +1,53 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import com.cibertec.monkey.entity.Cliente;
+import com.cibertec.monkey.service.ClienteService;
+
+@Controller
+public class ClienteController {
+
+    @Autowired
+    private ClienteService clienteService;
+
+    @GetMapping("/cliente")
+    public String listar(Model model) {
+        model.addAttribute("clientes", clienteService.listarTodosCliente());
+        return "cliente/index";
+    }
+
+    @GetMapping("/cliente/new")
+    public String crear(Model model) {
+        model.addAttribute("cliente", new Cliente());
+        return "cliente/create";
+    }
+
+    @PostMapping("/cliente")
+    public String guardar(@ModelAttribute("cliente") Cliente cliente) {
+        clienteService.guardarCliente(cliente);
+        return "redirect:/cliente";
+    }
+
+    @GetMapping("/cliente/edit/{id}")
+    public String editar(@PathVariable Integer id, Model model) {
+        model.addAttribute("cliente", clienteService.buscarById(id));
+        return "cliente/edit";
+    }
+
+    @PostMapping("/cliente/update/{id}")
+    public String actualizar(@PathVariable Integer id,
+                             @ModelAttribute("cliente") Cliente cliente) {
+        cliente.setIdclie(id);
+        clienteService.guardarCliente(cliente);
+        return "redirect:/cliente";
+    }
+
+    @GetMapping("/cliente/delete/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        clienteService.eliminarCliente(id);
+        return "redirect:/cliente";
+    }
+}

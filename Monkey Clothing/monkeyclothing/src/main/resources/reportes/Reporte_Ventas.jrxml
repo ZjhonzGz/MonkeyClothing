@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN"
+    "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport name="Reporte_Venta" language="java"
+    pageWidth="595" pageHeight="842"
+    columnWidth="555" leftMargin="20" rightMargin="20"
+    topMargin="20" bottomMargin="20">
+    <queryString language="SQL">
+        <![CDATA[
+        SELECT
+            v.nroventa,
+            v.fecha,
+            c.razon_soc AS cliente,
+            a.nombres AS asesor,
+            v.subtotal,
+            v.igv,
+            v.total
+        FROM ventas v
+        INNER JOIN cliente c ON v.idclie = c.idclie
+        INNER JOIN asesor_vta a ON v.codasesor = a.codasesor
+        ]]>
+    </queryString>
+    <field name="nroventa" class="java.lang.Long"/>
+    <field name="fecha" class="java.util.Date"/>
+    <field name="cliente" class="java.lang.String"/>
+    <field name="asesor" class="java.lang.String"/>
+    <field name="subtotal" class="java.math.BigDecimal"/>
+    <field name="igv" class="java.math.BigDecimal"/>
+    <field name="total" class="java.math.BigDecimal"/>
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="10" width="400" height="30"/>
+                <textElement>
+                    <font size="18" isBold="true"/>
+                </textElement>
+                <text><![CDATA[Reporte de Ventas - Monkey Clothing]]></text>
+            </staticText>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="25">
+            <staticText>
+                <reportElement x="0" y="0" width="50" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Nro]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="50" y="0" width="70" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Fecha]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="120" y="0" width="120" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Cliente]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="240" y="0" width="110" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Asesor]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="350" y="0" width="65" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Subtotal]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="415" y="0" width="50" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[IGV]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="465" y="0" width="90" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Total]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="50" height="17"/>
+                <textFieldExpression><![CDATA[$F{nroventa}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="50" y="0" width="70" height="17"/>
+                <textFieldExpression><![CDATA[$F{fecha}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="120" y="0" width="120" height="17"/>
+                <textFieldExpression><![CDATA[$F{cliente}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="240" y="0" width="110" height="17"/>
+                <textFieldExpression><![CDATA[$F{asesor}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="350" y="0" width="65" height="17"/>
+                <textFieldExpression><![CDATA[$F{subtotal}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="415" y="0" width="50" height="17"/>
+                <textFieldExpression><![CDATA[$F{igv}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="465" y="0" width="90" height="17"/>
+                <textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>

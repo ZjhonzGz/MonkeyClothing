@@ -1,0 +1,53 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import com.cibertec.monkey.entity.AsesorVenta;
+import com.cibertec.monkey.service.AsesorVentaService;
+
+@Controller
+public class AsesorVentaController {
+
+    @Autowired
+    private AsesorVentaService asesorService;
+
+    @GetMapping("/asesor")
+    public String listar(Model model) {
+        model.addAttribute("asesores", asesorService.listarTodos());
+        return "asesor/index";
+    }
+
+    @GetMapping("/asesor/new")
+    public String crear(Model model) {
+        model.addAttribute("asesor", new AsesorVenta());
+        return "asesor/create";
+    }
+
+    @PostMapping("/asesor")
+    public String guardar(@ModelAttribute("asesor") AsesorVenta asesor) {
+        asesorService.guardar(asesor);
+        return "redirect:/asesor";
+    }
+
+    @GetMapping("/asesor/edit/{id}")
+    public String editar(@PathVariable Integer id, Model model) {
+        model.addAttribute("asesor", asesorService.buscarById(id));
+        return "asesor/edit";
+    }
+
+    @PostMapping("/asesor/update/{id}")
+    public String actualizar(@PathVariable Integer id,
+                             @ModelAttribute("asesor") AsesorVenta asesor) {
+        asesor.setId(id);
+        asesorService.guardar(asesor);
+        return "redirect:/asesor";
+    }
+
+    @GetMapping("/asesor/delete/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        asesorService.eliminar(id);
+        return "redirect:/asesor";
+    }
+}

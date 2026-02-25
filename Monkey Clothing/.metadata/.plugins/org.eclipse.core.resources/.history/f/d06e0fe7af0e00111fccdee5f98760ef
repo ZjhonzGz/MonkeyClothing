@@ -1,0 +1,8 @@
+package com.cibertec.monkey.service;
+
+import com.cibertec.monkey.entity.Usuario;
+
+public interface UsuarioService {
+
+    Usuario validarLogin(String usuario, String clave);
+}

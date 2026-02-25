@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Monkey Clothing - Productos</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="container mt-4">
+    <h2>Lista de Productos</h2>
+    <a th:href="@{/productos/nuevo}" class="btn btn-primary btn-sm mb-3">Nuevo Producto</a>
+	
+	<a th:href="@{/reportes/inventario/pdf}" target="_blank"
+	   class="btn btn-danger mb-3">
+	   📄 Generar Reporte Inventario PDF
+	</a>
+
+    <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Código</th>
+                <th>Descripción</th>
+                <th>Precio Venta</th>
+                <th>Stock</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="p : ${productos}">
+                <td th:text="${p.idproducto}"></td>
+                <td th:text="${p.codigo}"></td>
+                <td th:text="${p.descripcion}"></td>
+                <td th:text="${p.precioVenta}"></td>
+                <td th:text="${p.stock}"></td>
+                <td th:text="${p.categoria.descripcion}"></td>
+                <td>
+                    <a th:href="@{/productos/editar/{id}(id=${p.idproducto})}"
+                       class="btn btn-warning btn-sm">Editar</a>
+                    <a th:href="@{/productos/eliminar/{id}(id=${p.idproducto})}"
+                       class="btn btn-danger btn-sm"
+                       onclick="return confirm('¿Eliminar producto?')">Eliminar</a>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+package com.cibertec.monkey.service;
+
+import java.math.BigDecimal;
+import java.util.List;
+import com.cibertec.monkey.entity.ProductoStockDTO;
+import com.cibertec.monkey.entity.VentaResumenDTO;
+
+public interface DashboardService {
+    Long contarVentasHoy();
+    BigDecimal totalIngresosMes();
+    BigDecimal totalGananciaMes();
+    Long contarProductosStockBajo(int umbral);
+    List<ProductoStockDTO> listarProductosStockBajo(int umbral);
+    List<VentaResumenDTO> ultimasVentas(int limite);
+}

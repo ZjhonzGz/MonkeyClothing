@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monkey Clothing - Nuevo Usuario</title>
+</head>
+<body>
+
+<h1>Monkey Clothing</h1>
+<h2>Registrar Nuevo Usuario</h2>
+
+<form th:action="@{/usuario}" th:object="${usuario}" method="post">
+
+    <div>
+        <label>Nombres:</label>
+        <input type="text" th:field="*{nombres}" placeholder="Ingrese nombres"/>
+        <span th:if="${#fields.hasErrors('nombres')}" th:errors="*{nombres}" style="color:red"></span>
+    </div>
+
+    <div>
+        <label>Apellidos:</label>
+        <input type="text" th:field="*{apellidos}" placeholder="Ingrese apellidos"/>
+        <span th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}" style="color:red"></span>
+    </div>
+
+    <div>
+        <label>Usuario:</label>
+        <input type="text" th:field="*{usuario}" placeholder="Ingrese usuario"/>
+        <span th:if="${#fields.hasErrors('usuario')}" th:errors="*{usuario}" style="color:red"></span>
+    </div>
+
+    <div>
+        <label>Contraseña:</label>
+        <input type="password" th:field="*{clave}" placeholder="Ingrese contraseña"/>
+        <span th:if="${#fields.hasErrors('clave')}" th:errors="*{clave}" style="color:red"></span>
+    </div>
+
+    <div>
+        <label>Rol:</label>
+        <select th:field="*{rol}">
+            <option value="">-- Seleccione rol --</option>
+            <option th:each="r : ${rolList}"
+                    th:value="${r.idrol}"
+                    th:text="${r.descripcion}">
+            </option>
+        </select>
+    </div>
+
+    <div>
+        <button type="submit">Guardar</button>
+        <a href="/usuario">Cancelar</a>
+    </div>
+
+</form>
+
+</body>
+</html>

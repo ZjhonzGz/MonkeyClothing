@@ -1,0 +1,45 @@
+package com.cibertec.monkey.service.impl;
+
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.stereotype.Service;
+import com.cibertec.monkey.repository.ClienteRepository;
+import com.cibertec.monkey.service.EmailService;
+import jakarta.mail.internet.MimeMessage;
+
+@Service
+public class EmailServiceImpl implements EmailService {
+
+    @Autowired
+    private JavaMailSender mailSender;
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Override
+    public void enviarATodos(String asunto, String contenidoHtml) {
+        List<String> emails = clienteRepository.findEmailsByOrigen("newsletter");
+
+        for (String email : emails) {
+            if (email != null && !email.isBlank()) {
+                enviarAUno(email, asunto, contenidoHtml);
+            }
+        }
+    }
+
+    @Override
+    public void enviarAUno(String destinatario, String asunto, String contenidoHtml) {
+        try {
+            MimeMessage mensaje = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mensaje, true, "UTF-8");
+            helper.setTo(destinatario);
+            helper.setSubject(asunto);
+            helper.setText(contenidoHtml, true); // true = es HTML
+            mailSender.send(mensaje);
+        } catch (Exception e) {
+            System.err.println("Error enviando email a " + destinatario + ": " + e.getMessage());
+        }
+    }
+}

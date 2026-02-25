@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE jasperReport PUBLIC "-//JasperReports//DTD Report Design//EN"
+    "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+<jasperReport name="Reporte_Clientes" language="java"
+    pageWidth="595" pageHeight="842"
+    columnWidth="555" leftMargin="20" rightMargin="20"
+    topMargin="20" bottomMargin="20">
+    <queryString language="SQL">
+        <![CDATA[SELECT idclie, razon_soc, telefono, email, origen FROM dbmonkeyclothes.cliente]]>
+    </queryString>
+    <field name="idclie" class="java.lang.Integer"/>
+    <field name="razon_soc" class="java.lang.String"/>
+    <field name="telefono" class="java.lang.String"/>
+    <field name="email" class="java.lang.String"/>
+    <field name="origen" class="java.lang.String"/>
+    <title>
+        <band height="50">
+            <staticText>
+                <reportElement x="0" y="10" width="400" height="30"/>
+                <textElement><font size="18" isBold="true"/></textElement>
+                <text><![CDATA[Reporte de Clientes - Monkey Clothing]]></text>
+            </staticText>
+        </band>
+    </title>
+    <columnHeader>
+        <band height="25">
+            <staticText>
+                <reportElement x="0" y="0" width="60" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="60" y="0" width="140" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Razon Social]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="200" y="0" width="100" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Telefono]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="300" y="0" width="155" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Email]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="455" y="0" width="100" height="20"/>
+                <textElement><font isBold="true"/></textElement>
+                <text><![CDATA[Origen]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="20">
+            <textField>
+                <reportElement x="0" y="0" width="60" height="17"/>
+                <textFieldExpression><![CDATA[$F{idclie}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="60" y="0" width="140" height="17"/>
+                <textFieldExpression><![CDATA[$F{razon_soc}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="200" y="0" width="100" height="17"/>
+                <textFieldExpression><![CDATA[$F{telefono}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="300" y="0" width="155" height="17"/>
+                <textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="455" y="0" width="100" height="17"/>
+                <textFieldExpression><![CDATA[$F{origen}]]></textFieldExpression>
+            </textField>
+        </band>
+    </detail>
+</jasperReport>

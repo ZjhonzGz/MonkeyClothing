@@ -1,0 +1,5 @@
+package com.cibertec.monkey.entity;
+
+public class Categoria {
+
+}

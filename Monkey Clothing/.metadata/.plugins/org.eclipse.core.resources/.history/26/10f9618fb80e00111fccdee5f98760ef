@@ -1,0 +1,5 @@
+package com.cibertec.monkey.controller;
+
+public class VentaController {
+
+}

@@ -1,0 +1,12 @@
+package com.cibertec.monkey.service;
+
+import java.util.List;
+import com.cibertec.monkey.entity.ProductoParaVender;
+import com.cibertec.monkey.entity.Venta;
+
+public interface VentaService {
+    Venta guardarVenta(Venta venta);
+    List<Venta> listarTodosVentas();
+    Venta registrarVentaCompleta(Venta venta, List<ProductoParaVender> carrito);
+    ventaRepository.findById(id).orElse(null);
+}

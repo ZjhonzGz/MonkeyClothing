@@ -1,0 +1,31 @@
+package com.cibertec.monkey.entity;
+
+import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+public class ProductoParaVender extends Producto {
+
+    private static final long serialVersionUID = 1L;
+    private int cantidad;
+
+    public ProductoParaVender(Integer idproducto, String codigo, String descripcion,
+                               BigDecimal precioCompra, BigDecimal precioVenta,
+                               Integer stock, int cantidad) {
+        super(idproducto, codigo, descripcion, precioCompra, precioVenta,
+              stock, null, null);
+        this.cantidad = cantidad;
+    }
+
+    public void aumentarCantidad(int n) {
+        this.cantidad += n;
+    }
+
+    public float getTotal() {
+        return this.getPrecioVenta()
+                   .multiply(new BigDecimal(this.cantidad))
+                   .floatValue();
+    }
+}

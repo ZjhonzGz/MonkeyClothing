@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Monkey Clothing - Nuevo Cliente</title>
+</head>
+<body>
+
+<h1>Nuevo Cliente</h1>
+
+<form th:action="@{/cliente}" th:object="${cliente}" method="post">
+
+    <div>
+        <label>Razón Social:</label>
+        <input type="text" th:field="*{razonSoc}" placeholder="Razón social"/>
+    </div>
+    <div>
+        <label>Ciudad:</label>
+        <input type="text" th:field="*{nombreCiudad}" placeholder="Ciudad"/>
+    </div>
+    <div>
+        <label>Dirección:</label>
+        <input type="text" th:field="*{direccionClie}" placeholder="Dirección"/>
+    </div>
+    <div>
+        <label>Teléfono:</label>
+        <input type="text" th:field="*{telefono}" placeholder="Teléfono"/>
+    </div>
+
+    <button type="submit">Guardar</button>
+    <a href="/cliente">Cancelar</a>
+
+</form>
+
+</body>
+</html>

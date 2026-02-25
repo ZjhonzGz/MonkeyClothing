@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monkey Clothing — Streetwear Premium</title>
+  <meta name="description" content="Monkey Clothing. Streetwear premium hecho para las calles. Visita nuestros locales y vive la experiencia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- LOADER -->
+  <div class="loader" id="loader">
+    <div class="loader-logo">MONKEY<span>CLOTHING</span></div>
+    <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+  </div>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <a href="#" class="nav-logo">Monkey Clothing<span>.</span></a>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Menú">
+      <span></span><span></span>
+    </button>
+
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#coleccion" class="nav-link">Colección</a></li>
+      <li><a href="#nosotros"  class="nav-link">Nosotros</a></li>
+      <li><a href="#drops"     class="nav-link">Drops</a></li>
+      <li><a href="#tiendas"   class="nav-link">Tiendas</a></li>
+    </ul>
+  </header>
+
+  <!-- ======= HERO ======= -->
+  <section class="hero" id="home">
+    <!-- Slideshow de fondo editorial -->
+    <div class="hero-slides">
+      <div class="hero-slide active" style="background-color:#0e0e0e;">
+        <div class="slide-overlay"></div>
+        <!-- Placeholder visual: gradiente editorial -->
+        <div class="slide-art slide-art--1"></div>
+      </div>
+      <div class="hero-slide" style="background-color:#111;">
+        <div class="slide-overlay"></div>
+        <div class="slide-art slide-art--2"></div>
+      </div>
+      <div class="hero-slide" style="background-color:#0a0a0a;">
+        <div class="slide-overlay"></div>
+        <div class="slide-art slide-art--3"></div>
+      </div>
+    </div>
+
+    <!-- Ticker superior -->
+    <div class="hero-ticker">
+      <div class="ticker-track">
+        <span>NUEVA COLECCIÓN 2025 <em>✦</em></span>
+        <span>STREETWEAR PREMIUM <em>✦</em></span>
+        <span>HECHO PARA LAS CALLES <em>✦</em></span>
+        <span>LIMITED DROPS <em>✦</em></span>
+        <span>MONKEY CLOTHING <em>✦</em></span>
+        <span>NUEVA COLECCIÓN 2025 <em>✦</em></span>
+        <span>STREETWEAR PREMIUM <em>✦</em></span>
+        <span>HECHO PARA LAS CALLES <em>✦</em></span>
+        <span>LIMITED DROPS <em>✦</em></span>
+        <span>MONKEY CLOTHING <em>✦</em></span>
+      </div>
+    </div>
+
+    <!-- Contenido hero -->
+    <div class="hero-content">
+      <p class="hero-tag" data-reveal>// SS2025 — Drop en tienda</p>
+      <h1 class="hero-title" data-reveal>
+        <span class="hero-title__line">MONKEY</span>
+        <span class="hero-title__line hero-title__line--accent">CLOTHING</span>
+      </h1>
+      <div class="hero-bottom" data-reveal>
+        <p class="hero-desc">No seguimos tendencias.<br>Las creamos.</p>
+        <a href="#tiendas" class="btn-primary">
+          Visita el local
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 10h12M12 5l5 5-5 5"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- Slide indicators -->
+    <div class="hero-indicators">
+      <button class="indicator active" data-slide="0"></button>
+      <button class="indicator" data-slide="1"></button>
+      <button class="indicator" data-slide="2"></button>
+    </div>
+
+    <!-- Scroll hint -->
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </section>
+
+  <!-- ======= MARQUEE ======= -->
+  <div class="marquee-band">
+    <div class="marquee-inner">
+      <div class="marquee-content">
+        <span>Streetwear</span><span class="dot">◆</span>
+        <span>Urban Culture</span><span class="dot">◆</span>
+        <span>Limited Edition</span><span class="dot">◆</span>
+        <span>Monkey Clothing</span><span class="dot">◆</span>
+        <span>Perú</span><span class="dot">◆</span>
+        <span>Premium Drops</span><span class="dot">◆</span>
+        <span>Streetwear</span><span class="dot">◆</span>
+        <span>Urban Culture</span><span class="dot">◆</span>
+        <span>Limited Edition</span><span class="dot">◆</span>
+        <span>Monkey Clothing</span><span class="dot">◆</span>
+        <span>Perú</span><span class="dot">◆</span>
+        <span>Premium Drops</span><span class="dot">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======= COLECCIÓN ======= -->
+  <section class="section collection" id="coleccion">
+    <div class="section-head reveal">
+      <span class="section-tag">// 01 — Colección</span>
+      <h2 class="section-title">Nuestra<br>Esencia</h2>
+      <p class="section-subtitle">Cada pieza diseñada para quienes entienden que la ropa es un lenguaje. Identidad, no moda.</p>
+    </div>
+
+    <div class="collection-grid reveal">
+
+      <!-- Card grande -->
+      <article class="col-card col-card--hero">
+        <div class="col-card__img">
+          <div class="col-card__art col-card__art--1"></div>
+          <div class="col-card__deco"></div>
+        </div>
+        <div class="col-card__info">
+          <span class="col-card__tag">Signature Series</span>
+          <h3 class="col-card__name">Core Collection</h3>
+          <p class="col-card__desc">Los clásicos que definen quiénes somos</p>
+        </div>
+      </article>
+
+      <!-- Grid derecho -->
+      <div class="col-right">
+        <article class="col-card">
+          <div class="col-card__img">
+            <div class="col-card__art col-card__art--2"></div>
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Spring / Summer</span>
+            <h3 class="col-card__name">Temporada</h3>
+          </div>
+        </article>
+
+        <article class="col-card">
+          <div class="col-card__img">
+            <div class="col-card__art col-card__art--3"></div>
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Headwear</span>
+            <h3 class="col-card__name">Accesorios</h3>
+          </div>
+        </article>
+
+        <article class="col-card">
+          <div class="col-card__img">
+            <div class="col-card__art col-card__art--4"></div>
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Limited Drop</span>
+            <h3 class="col-card__name">Exclusivos</h3>
+          </div>
+        </article>
+
+        <article class="col-card">
+          <div class="col-card__img">
+            <div class="col-card__art col-card__art--5"></div>
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Outerwear</span>
+            <h3 class="col-card__name">Outer Layer</h3>
+          </div>
+        </article>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ======= NOSOTROS / MANIFESTO ======= -->
+  <section class="section manifesto" id="nosotros">
+    <div class="manifesto__bg-text" aria-hidden="true">MONKEY</div>
+    <div class="manifesto__content reveal">
+      <span class="section-tag">// 02 — Manifiesto</span>
+      <h2 class="manifesto__title">Más Que<br>Ropa. Una<br>Actitud.</h2>
+      <div class="manifesto__body">
+        <p>Monkey Clothing nació en las calles y vive en ellas. No seguimos tendencias, las creamos. Nuestra ropa es para quienes se atreven a ser diferentes, para quienes ven la ciudad como su pasarela y cada día como una oportunidad de expresarse sin filtros.</p>
+        <div class="manifesto__stats">
+          <div class="stat">
+            <span class="stat__num">6+</span>
+            <span class="stat__label">Años en la calle</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">3</span>
+            <span class="stat__label">Tiendas físicas</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">50K</span>
+            <span class="stat__label">Familia Monkey</span>
+          </div>
+          <div class="stat">
+            <span class="stat__num">100%</span>
+            <span class="stat__label">Identidad propia</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======= DROPS ======= -->
+  <section class="section drops" id="drops">
+    <div class="section-head reveal">
+      <span class="section-tag">// 03 — Drops</span>
+      <h2 class="section-title">Próximos<br>Lanzamientos</h2>
+    </div>
+
+    <div class="drops-grid reveal">
+
+      <article class="drop-card drop-card--featured">
+        <div class="drop-card__date">21 FEB</div>
+        <div class="drop-card__art drop-card__art--1"></div>
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Cápsula Exclusiva</span>
+          <h3 class="drop-card__name">Locals Only</h3>
+          <p class="drop-card__sub">Solo en tienda física</p>
+        </div>
+      </article>
+
+      <article class="drop-card">
+        <div class="drop-card__date">15 MAR</div>
+        <div class="drop-card__art drop-card__art--2"></div>
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Hoodie Collection</span>
+          <h3 class="drop-card__name">Winter Drop</h3>
+          <p class="drop-card__sub">Coming soon</p>
+        </div>
+      </article>
+
+      <article class="drop-card">
+        <div class="drop-card__date">01 ABR</div>
+        <div class="drop-card__art drop-card__art--3"></div>
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Collab</span>
+          <h3 class="drop-card__name">Sorpresa</h3>
+          <p class="drop-card__sub">Stay tuned</p>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ======= TIENDAS ======= -->
+  <section class="section stores" id="tiendas">
+    <div class="section-head reveal">
+      <span class="section-tag">// 04 — Locales</span>
+      <h2 class="section-title">Visítanos</h2>
+      <p class="section-subtitle">La ropa se siente diferente en persona. Ven y vive la experiencia Monkey.</p>
+    </div>
+
+    <div class="stores-list reveal">
+
+      <div class="store-item">
+        <div class="store-item__num">01</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">Lima Centro</h3>
+          <p class="store-item__addr">Jr. de la Unión 456, Lima</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <a href="#" class="store-item__cta">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="store-item">
+        <div class="store-item__num">02</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">Miraflores</h3>
+          <p class="store-item__addr">Av. Larco 890, Piso 2</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <a href="#" class="store-item__cta">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="store-item">
+        <div class="store-item__num">03</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">San Isidro</h3>
+          <p class="store-item__addr">Av. El Golf 234</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <a href="#" class="store-item__cta">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- CTA experiencia -->
+    <div class="stores-cta reveal">
+      <h2 class="stores-cta__title">Vive La<br><em>Experiencia</em></h2>
+      <a href="#tiendas" class="btn-outline">Encuentra tu local más cercano</a>
+    </div>
+
+  </section>
+
+  <!-- ======= FOOTER ======= -->
+  <footer class="footer" id="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">Monkey Clothing</span>
+        <p>Streetwear premium para quienes viven la ciudad con actitud.</p>
+        <div class="footer__social">
+          <a href="#" class="social-btn" aria-label="Instagram">IG</a>
+          <a href="#" class="social-btn" aria-label="TikTok">TK</a>
+          <a href="#" class="social-btn" aria-label="Facebook">FB</a>
+          <a href="#" class="social-btn" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+
+      <div class="footer__col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#coleccion">Colección</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#drops">Drops</a></li>
+          <li><a href="#tiendas">Tiendas</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Locales</h4>
+        <ul>
+          <li><a href="#">Lima Centro</a></li>
+          <li><a href="#">Miraflores</a></li>
+          <li><a href="#">San Isidro</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:hola@monkeyclothing.pe">hola@monkeyclothing.pe</a></li>
+          <li><a href="#">WhatsApp</a></li>
+          <li><a href="#">Instagram DM</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__bottom">
+      <p>© 2025 Monkey Clothing. Todos los derechos reservados.</p>
+      <a href="/admin/login" class="footer__admin-link" title="Panel de administración">
+        Panel Admin ↗
+      </a>
+    </div>
+  </footer>
+
+  <script src="js/js.js"></script>
+</body>
+</html>

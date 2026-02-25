@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monkey Clothing — Streetwear Premium</title>
+  <meta name="description" content="Monkey Clothing. Streetwear premium hecho para las calles. Visita nuestros locales y vive la experiencia." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div class="loader" id="loader">
+    <div class="loader-logo">MONKEY<span>CLOTHING</span></div>
+    <div class="loader-bar"><div class="loader-fill" id="loaderFill"></div></div>
+  </div>
+
+  <header class="nav" id="nav">
+    <a href="#" class="nav-logo">Monkey Clothing<span>.</span></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Menú">
+      <span></span><span></span>
+    </button>
+	<ul class="nav-links" id="navLinks">
+	  <li><a href="#coleccion" class="nav-link">Colección</a></li>
+	  <li><a href="#nosotros"  class="nav-link">Nosotros</a></li>
+	  <li><a href="#drops"     class="nav-link">Drops</a></li>
+	  <li><a href="#tiendas"   class="nav-link">Tiendas</a></li>
+	  <li><button class="nav-link nav-link--cta" onclick="nlAbrirModal()">Suscribirse</button></li>
+	</ul>
+  </header>
+
+  <section class="hero" id="home">
+    <div class="hero-slides">
+      <div class="hero-slide active">
+        <div class="slide-overlay"></div>
+        <img src="images/hero-slide-1.jpg" alt="Monkey Clothing" class="slide-art" />
+      </div>
+      <div class="hero-slide">
+        <div class="slide-overlay"></div>
+        <img src="images/hero-slide-2.jpg" alt="Monkey Clothing" class="slide-art" />
+      </div>
+      <div class="hero-slide">
+        <div class="slide-overlay"></div>
+        <img src="images/hero-slide-3.jpg" alt="Monkey Clothing" class="slide-art" />
+      </div>
+    </div>
+    <div class="hero-ticker">
+      <div class="ticker-track">
+        <span>NUEVA COLECCIÓN 2025 <em>✦</em></span>
+        <span>STREETWEAR PREMIUM <em>✦</em></span>
+        <span>HECHO PARA LAS CALLES <em>✦</em></span>
+        <span>LIMITED DROPS <em>✦</em></span>
+        <span>MONKEY CLOTHING <em>✦</em></span>
+        <span>NUEVA COLECCIÓN 2025 <em>✦</em></span>
+        <span>STREETWEAR PREMIUM <em>✦</em></span>
+        <span>HECHO PARA LAS CALLES <em>✦</em></span>
+        <span>LIMITED DROPS <em>✦</em></span>
+        <span>MONKEY CLOTHING <em>✦</em></span>
+      </div>
+    </div>
+    <div class="hero-content">
+      <p class="hero-tag" data-reveal>// SS2025 — Drop en tienda</p>
+      <h1 class="hero-title" data-reveal>
+        <span class="hero-title__line">MONKEY</span>
+        <span class="hero-title__line hero-title__line--accent">CLOTHING</span>
+      </h1>
+      <div class="hero-bottom" data-reveal>
+        <p class="hero-desc">No seguimos tendencias.<br>Las creamos.</p>
+        <a href="#tiendas" class="btn-primary">
+          Visita el local
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 10h12M12 5l5 5-5 5"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="hero-indicators">
+      <button class="indicator active" data-slide="0"></button>
+      <button class="indicator" data-slide="1"></button>
+      <button class="indicator" data-slide="2"></button>
+    </div>
+    <div class="hero-scroll-hint">
+      <div class="scroll-line"></div>
+      <span>scroll</span>
+    </div>
+  </section>
+
+  <div class="marquee-band">
+    <div class="marquee-inner">
+      <div class="marquee-content">
+        <span>Streetwear</span><span class="dot">◆</span>
+        <span>Urban Culture</span><span class="dot">◆</span>
+        <span>Limited Edition</span><span class="dot">◆</span>
+        <span>Monkey Clothing</span><span class="dot">◆</span>
+        <span>Perú</span><span class="dot">◆</span>
+        <span>Premium Drops</span><span class="dot">◆</span>
+        <span>Streetwear</span><span class="dot">◆</span>
+        <span>Urban Culture</span><span class="dot">◆</span>
+        <span>Limited Edition</span><span class="dot">◆</span>
+        <span>Monkey Clothing</span><span class="dot">◆</span>
+        <span>Perú</span><span class="dot">◆</span>
+        <span>Premium Drops</span><span class="dot">◆</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="section collection" id="coleccion">
+    <div class="section-head reveal">
+      <span class="section-tag">// 01 — Colección</span>
+      <h2 class="section-title">Nuestra<br>Esencia</h2>
+      <p class="section-subtitle">Cada pieza diseñada para quienes entienden que la ropa es un lenguaje. Identidad, no moda.</p>
+    </div>
+    <div class="collection-grid reveal">
+      <article class="col-card col-card--hero">
+        <div class="col-card__img">
+          <img src="images/col-core.jpg" alt="Core Collection" class="col-card__art" />
+          <div class="col-card__deco"></div>
+        </div>
+        <div class="col-card__info">
+          <span class="col-card__tag">Signature Series</span>
+          <h3 class="col-card__name">Core Collection</h3>
+          <p class="col-card__desc">Los clásicos que definen quiénes somos</p>
+        </div>
+      </article>
+      <div class="col-right">
+        <article class="col-card">
+          <div class="col-card__img">
+            <img src="images/col-temporada.jpg" alt="Temporada" class="col-card__art" />
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Spring / Summer</span>
+            <h3 class="col-card__name">Temporada</h3>
+          </div>
+        </article>
+        <article class="col-card">
+          <div class="col-card__img">
+            <img src="images/col-accesorios.jpg" alt="Accesorios" class="col-card__art" />
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Headwear</span>
+            <h3 class="col-card__name">Accesorios</h3>
+          </div>
+        </article>
+        <article class="col-card">
+          <div class="col-card__img">
+            <img src="images/col-exclusivos.jpg" alt="Exclusivos" class="col-card__art" />
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Limited Drop</span>
+            <h3 class="col-card__name">Exclusivos</h3>
+          </div>
+        </article>
+        <article class="col-card">
+          <div class="col-card__img">
+            <img src="images/col-outerlayer.jpg" alt="Outer Layer" class="col-card__art" />
+            <div class="col-card__deco"></div>
+          </div>
+          <div class="col-card__info">
+            <span class="col-card__tag">Outerwear</span>
+            <h3 class="col-card__name">Outer Layer</h3>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section manifesto" id="nosotros">
+    <div class="manifesto__bg-text" aria-hidden="true">MONKEY</div>
+    <div class="manifesto__content reveal">
+      <span class="section-tag">// 02 — Manifiesto</span>
+      <h2 class="manifesto__title">Más Que<br>Ropa. Una<br>Actitud.</h2>
+      <div class="manifesto__body">
+        <p>Monkey Clothing nació en las calles y vive en ellas. No seguimos tendencias, las creamos. Nuestra ropa es para quienes se atreven a ser diferentes, para quienes ven la ciudad como su pasarela y cada día como una oportunidad de expresarse sin filtros.</p>
+        <div class="manifesto__stats">
+          <div class="stat">
+            <span class="stat__num">6+</span>
+            <span class="stat__label">Años en la calle</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section drops" id="drops">
+    <div class="section-head reveal">
+      <span class="section-tag">// 03 — Drops</span>
+      <h2 class="section-title">Próximos<br>Lanzamientos</h2>
+    </div>
+    <div class="drops-grid reveal">
+      <article class="drop-card drop-card--featured">
+        <div class="drop-card__date">21 FEB</div>
+        <img src="images/drop-locals-only.jpg" alt="Locals Only" class="drop-card__art" />
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Cápsula Exclusiva</span>
+          <h3 class="drop-card__name">Locals Only</h3>
+          <p class="drop-card__sub">Solo en tienda física</p>
+        </div>
+      </article>
+      <article class="drop-card">
+        <div class="drop-card__date">15 MAR</div>
+        <img src="images/drop-winter.jpg" alt="Winter Drop" class="drop-card__art" />
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Hoodie Collection</span>
+          <h3 class="drop-card__name">Winter Drop</h3>
+          <p class="drop-card__sub">Coming soon</p>
+        </div>
+      </article>
+      <article class="drop-card">
+        <div class="drop-card__date">01 ABR</div>
+        <img src="images/drop-collab.jpg" alt="Collab" class="drop-card__art" />
+        <div class="drop-card__overlay">
+          <span class="drop-card__tag">Collab</span>
+          <h3 class="drop-card__name">Sorpresa</h3>
+          <p class="drop-card__sub">Stay tuned</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="section stores" id="tiendas">
+    <div class="section-head reveal">
+      <span class="section-tag">// 04 — Locales</span>
+      <h2 class="section-title">Visítanos</h2>
+      <p class="section-subtitle">La ropa se siente diferente en persona. Ven y vive la experiencia Monkey.</p>
+    </div>
+    <div class="stores-list reveal">
+      <div class="store-item">
+        <div class="store-item__num">01</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">Lima Centro</h3>
+          <p class="store-item__addr">Jr. de la Unión 456, Lima</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <button class="store-item__cta"
+          onclick="openMapSingle(-12.0464, -77.0428, 'Lima Centro', 'Jr. de la Unión 456, Lima')">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      </div>
+      <div class="store-item">
+        <div class="store-item__num">02</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">Miraflores</h3>
+          <p class="store-item__addr">Av. Larco 890, Piso 2</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <button class="store-item__cta"
+          onclick="openMapSingle(-12.1182, -77.0298, 'Miraflores', 'Av. Larco 890, Piso 2')">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      </div>
+      <div class="store-item">
+        <div class="store-item__num">03</div>
+        <div class="store-item__info">
+          <h3 class="store-item__city">San Isidro</h3>
+          <p class="store-item__addr">Av. El Golf 234</p>
+          <p class="store-item__hours">Lun–Sáb 10am–9pm &nbsp;·&nbsp; Dom 11am–7pm</p>
+        </div>
+        <button class="store-item__cta"
+          onclick="openMapSingle(-12.0983, -77.0356, 'San Isidro', 'Av. El Golf 234')">
+          Ver mapa
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+            <path d="M3 8h10M9 4l4 4-4 4"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div class="stores-cta reveal">
+      <h2 class="stores-cta__title">Vive La<br><em>Experiencia</em></h2>
+      <button class="btn-outline" onclick="openMapAll()">Encuentra tu local más cercano</button>
+    </div>
+  </section>
+
+  <footer class="footer" id="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <span class="footer__logo">Monkey Clothing</span>
+        <p>Streetwear premium para quienes viven la ciudad con actitud.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#coleccion">Colección</a></li>
+          <li><a href="#nosotros">Nosotros</a></li>
+          <li><a href="#drops">Drops</a></li>
+          <li><a href="#tiendas">Tiendas</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Locales</h4>
+        <ul>
+          <li><a href="#">Lima Centro</a></li>
+          <li><a href="#">Miraflores</a></li>
+          <li><a href="#">San Isidro</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Contacto</h4>
+        <ul>
+          <li><a href="mailto:ventas@monkeyclothing.pe">ventas@monkeyclothing.pe</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <p>© 2026 Monkey Clothing. Todos los derechos reservados.</p>
+      <a href="/admin" class="footer__admin-link">Panel Admin</a>
+    </div>
+  </footer>
+
+  <div class="map-modal" id="modalSingle" role="dialog" aria-modal="true">
+    <div class="map-modal__box">
+      <div class="map-modal__head">
+        <div>
+          <span class="map-modal__tag">// Monkey Clothing</span>
+          <h3 class="map-modal__title" id="modalSingleTitle">—</h3>
+          <p class="map-modal__addr" id="modalSingleAddr">—</p>
+        </div>
+        <button class="map-modal__close" onclick="closeModal('modalSingle')" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="map-modal__frame">
+        <iframe id="iframeSingle" src="" allowfullscreen loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade" title="Mapa tienda"></iframe>
+      </div>
+      <div class="map-modal__foot">
+        <a id="linkSingleDir" href="#" target="_blank" rel="noopener" class="btn-primary map-btn">
+          Cómo llegar
+          <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4 10h12M12 5l5 5-5 5"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-modal" id="modalAll" role="dialog" aria-modal="true">
+    <div class="map-modal__box map-modal__box--wide">
+      <div class="map-modal__head">
+        <div>
+          <span class="map-modal__tag">// 04 — Locales</span>
+          <h3 class="map-modal__title">Nuestras Tiendas</h3>
+        </div>
+        <button class="map-modal__close" onclick="closeModal('modalAll')" aria-label="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <div class="map-modal__layout">
+        <aside class="map-modal__sidebar">
+          <p class="loc-status" id="locationStatus">
+            <svg class="loc-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+              <circle cx="8" cy="7" r="3"/><path d="M8 2a5 5 0 0 1 0 10C5 12 2 9.5 2 7a6 6 0 0 1 12 0c0 2.5-3 5-6 5z"/>
+            </svg>
+            <span id="locStatusText">Detectando ubicación...</span>
+          </p>
+          <div class="map-store-card" onclick="flyTo(-12.0464, -77.0428)">
+            <span class="map-store-card__num">01</span>
+            <div class="map-store-card__info">
+              <strong>Lima Centro</strong>
+              <span>Jr. de la Unión 456</span>
+              <span class="map-store-card__hours">Lun–Sáb 10am–9pm · Dom 11am–7pm</span>
+            </div>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=-12.0464,-77.0428"
+               target="_blank" rel="noopener" class="map-store-card__dir"
+               onclick="event.stopPropagation()" title="Cómo llegar">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </a>
+          </div>
+          <div class="map-store-card" onclick="flyTo(-12.1182, -77.0298)">
+            <span class="map-store-card__num">02</span>
+            <div class="map-store-card__info">
+              <strong>Miraflores</strong>
+              <span>Av. Larco 890, Piso 2</span>
+              <span class="map-store-card__hours">Lun–Sáb 10am–9pm · Dom 11am–7pm</span>
+            </div>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=-12.1182,-77.0298"
+               target="_blank" rel="noopener" class="map-store-card__dir"
+               onclick="event.stopPropagation()" title="Cómo llegar">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </a>
+          </div>
+          <div class="map-store-card" onclick="flyTo(-12.0983, -77.0356)">
+            <span class="map-store-card__num">03</span>
+            <div class="map-store-card__info">
+              <strong>San Isidro</strong>
+              <span>Av. El Golf 234</span>
+              <span class="map-store-card__hours">Lun–Sáb 10am–9pm · Dom 11am–7pm</span>
+            </div>
+            <a href="https://www.google.com/maps/dir/?api=1&destination=-12.0983,-77.0356"
+               target="_blank" rel="noopener" class="map-store-card__dir"
+               onclick="event.stopPropagation()" title="Cómo llegar">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
+                <path d="M3 8h10M9 4l4 4-4 4"/>
+              </svg>
+            </a>
+          </div>
+        </aside>
+        <div class="map-modal__frame map-modal__frame--all">
+          <iframe id="iframeAll" src="" allowfullscreen loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade" title="Mapa todas las tiendas"></iframe>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="map-backdrop" id="mapBackdrop" onclick="closeAllModals()"></div>
+
+  <div class="nl-banner" id="nlBanner" role="complementary">
+    <button class="nl-banner__close" onclick="nlCerrarBanner()" aria-label="Cerrar">✕</button>
+    <div class="nl-banner__body">
+      <div class="nl-banner__icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+          <path d="M3 8l7.89 5.26a2 2 0 0 0 2.22 0L21 8M5 19h14a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2z"/>
+        </svg>
+      </div>
+      <div class="nl-banner__text">
+        <strong>¡Únete a la familia Monkey!</strong>
+        <span>Drops exclusivos y novedades antes que nadie.</span>
+      </div>
+    </div>
+    <button class="nl-banner__btn" onclick="nlAbrirModal()">
+      Suscribirme
+      <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 8h10M9 4l4 4-4 4"/>
+      </svg>
+    </button>
+  </div>
+
+  <div class="nl-overlay" id="nlOverlay" onclick="nlCerrarModal()"></div>
+
+  <div class="nl-modal" id="nlModal" role="dialog" aria-modal="true" aria-label="Suscribirse al newsletter">
+    <button class="nl-modal__close" onclick="nlCerrarModal()" aria-label="Cerrar">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6 6 18M6 6l12 12"/>
+      </svg>
+    </button>
+
+    <div id="nlFormState">
+      <span class="nl-modal__tag">// Newsletter</span>
+      <h2 class="nl-modal__title">Sé parte de<br>la <em>familia</em>.</h2>
+      <p class="nl-modal__sub">Drops antes que nadie, ofertas exclusivas y contenido para la comunidad.</p>
+
+      <div class="nl-field">
+        <label class="nl-label" for="nlNombre">Nombre *</label>
+        <input type="text" id="nlNombre" class="nl-input" placeholder="Tu nombre completo" maxlength="100" autocomplete="name"/>
+        <span class="nl-error" id="nlErrNombre"></span>
+      </div>
+
+      <div class="nl-field">
+        <label class="nl-label" for="nlTelefono">Teléfono / WhatsApp</label>
+        <input type="tel" id="nlTelefono" class="nl-input" placeholder="9XXXXXXXX" maxlength="20" autocomplete="tel"/>
+      </div>
+
+      <div class="nl-field">
+        <label class="nl-label" for="nlEmail">Email *</label>
+        <input type="email" id="nlEmail" class="nl-input" placeholder="tu@correo.com" maxlength="150" autocomplete="email"/>
+        <span class="nl-error" id="nlErrEmail"></span>
+      </div>
+
+      <button class="nl-submit" id="nlSubmitBtn" onclick="nlEnviar()">
+        <span id="nlSubmitTxt">Suscribirme</span>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 10h12M12 5l5 5-5 5"/>
+        </svg>
+      </button>
+      <p class="nl-privacy">Sin spam. Puedes darte de baja cuando quieras.</p>
+    </div>
+
+    <div id="nlSuccessState" style="display:none; text-align:center; padding: 1rem 0;">
+      <div class="nl-success__icon">
+        <svg viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="1.5">
+          <circle cx="30" cy="30" r="28"/>
+          <path d="M18 30l8 8 16-16"/>
+        </svg>
+      </div>
+      <h3 class="nl-success__title">¡Bienvenido<br>a la familia!</h3>
+      <p class="nl-success__msg">Serás el primero en enterarte de cada drop.</p>
+      <button class="nl-submit nl-submit--ghost" onclick="nlCerrarModal()">Cerrar</button>
+    </div>
+  </div>
+
+  <script src="js/js.js"></script>
+</body>
+</html>

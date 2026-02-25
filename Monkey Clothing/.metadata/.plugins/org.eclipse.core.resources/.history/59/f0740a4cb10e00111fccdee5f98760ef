@@ -1,0 +1,11 @@
+package com.cibertec.monkey.service;
+
+import java.util.List;
+import com.cibertec.monkey.entity.Usuario;
+
+public interface UsuarioService {
+    List<Usuario> listarTodosUsuario();
+    Usuario buscarByUsuario(String usuario);
+    void guardarUsuario(Usuario usuario);
+    boolean login(Usuario usuario);
+}

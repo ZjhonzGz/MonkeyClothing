@@ -1,0 +1,53 @@
+package com.cibertec.monkey.entity;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.Date;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@ToString(exclude = {"cliente", "asesorVenta"}) // evita LazyException al imprimir
+@Entity
+@Table(name = "ventas")
+public class Venta implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "nroventa")
+    private Long id;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false)
+    private Date fecha;
+
+    // relación con cliente
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "idclie", nullable = false)
+    private Cliente cliente;
+
+    // relación con asesor
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "codasesor", nullable = false)
+    private AsesorVenta asesorVenta;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal subtotal = BigDecimal.ZERO;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal igv = BigDecimal.ZERO;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal total = BigDecimal.ZERO;
+
+    @Column(precision = 10, scale = 2)
+    private BigDecimal ganancia = BigDecimal.ZERO;
+}

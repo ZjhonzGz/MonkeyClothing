@@ -1,0 +1,323 @@
+package com.cibertec.monkey.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import com.cibertec.monkey.entity.Cliente;
+import com.cibertec.monkey.service.ClienteService;
+import com.cibertec.monkey.service.EmailService;
+import net.sf.jasperreports.engine.JasperRunManager;
+import javax.sql.DataSource;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.InputStream;
+import java.sql.Connection;
+import java.util.HashMap;
+
+import java.util.List;
+import java.util.Map;
+
+@Controller
+public class ClienteController {
+
+    @Autowired private ClienteService clienteService;
+    @Autowired private EmailService   emailService;
+    @GetMapping("/cliente")
+    public String listar(Model model) {
+        model.addAttribute("clientes", clienteService.listarTodosCliente());
+        return "cliente/index";
+    }
+
+    @GetMapping("/cliente/new")
+    public String crear(Model model) {
+        model.addAttribute("cliente", new Cliente());
+        return "cliente/create";
+    }
+
+    @PostMapping("/cliente")
+    public String guardar(@ModelAttribute("cliente") Cliente cliente) {
+        clienteService.guardarCliente(cliente);
+        return "redirect:/cliente";
+    }
+
+    @GetMapping("/cliente/edit/{id}")
+    public String editar(@PathVariable Integer id, Model model) {
+        model.addAttribute("cliente", clienteService.buscarById(id));
+        return "cliente/edit";
+    }
+
+    @PostMapping("/cliente/update/{id}")
+    public String actualizar(@PathVariable Integer id,
+                             @ModelAttribute("cliente") Cliente cliente) {
+        cliente.setId(id);
+        clienteService.guardarCliente(cliente);
+        return "redirect:/cliente";
+    }
+
+    @GetMapping("/cliente/delete/{id}")
+    public String eliminar(@PathVariable Integer id) {
+        clienteService.eliminarCliente(id);
+        return "redirect:/cliente";
+    }
+    
+    @PostMapping("/api/newsletter")
+    @ResponseBody
+    public ResponseEntity<?> suscribir(@RequestBody Map<String, String> body) {
+        try {
+            String nombre   = body.getOrDefault("nombre",   "").trim();
+            String telefono = body.getOrDefault("telefono", "").trim();
+            String email    = body.getOrDefault("email",    "").trim();
+
+            if (nombre.isEmpty())
+                return ResponseEntity.badRequest()
+                        .body(Map.of("ok", false, "msg", "El nombre es obligatorio."));
+            if (email.isEmpty())
+                return ResponseEntity.badRequest()
+                        .body(Map.of("ok", false, "msg", "El email es obligatorio."));
+
+            Cliente c = new Cliente();
+            c.setRazonSocial(nombre);
+            c.setTelefono(telefono.isEmpty() ? null : telefono);
+            c.setEmail(email);
+            c.setOrigen("newsletter");
+            clienteService.guardarCliente(c);
+
+            return ResponseEntity.ok(
+                    Map.of("ok", true, "msg", "¡Suscripción exitosa! Bienvenido a la familia Monkey."));
+
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("ok", false, "msg", "Error al procesar la suscripción."));
+        }
+    }
+    
+    @PostMapping("/cliente/mensajes/enviar")
+    @ResponseBody
+    public ResponseEntity<?> enviarNewsletter(@RequestBody Map<String, Object> body) {
+
+        Object asuntoObj  = body.get("asunto");
+        Object mensajeObj = body.get("mensaje");
+
+        String asunto  = asuntoObj  != null ? asuntoObj.toString().trim()  : "";
+        String mensaje = mensajeObj != null ? mensajeObj.toString().trim() : "";
+
+        if (asunto.isEmpty() || mensaje.isEmpty())
+            return ResponseEntity.badRequest()
+                    .body(Map.of("ok", false, "msg", "Asunto y mensaje son obligatorios."));
+
+        Object dest = body.get("destinatarios");
+        if (!(dest instanceof List<?> lista) || lista.isEmpty())
+            return ResponseEntity.badRequest()
+                    .body(Map.of("ok", false, "msg", "No hay destinatarios seleccionados."));
+
+        int enviados = 0;
+        int fallidos = 0;
+
+        for (Object item : lista) {
+            if (item instanceof Map<?, ?> d) {
+                Object emailObj = d.get("email");
+                String email = emailObj != null ? emailObj.toString().trim() : "";
+                if (!email.isBlank()) {
+                    try {
+                        emailService.enviarAUno(email, asunto, construirHtml(asunto, mensaje));
+                        enviados++;
+                    } catch (Exception e) {
+                        fallidos++;
+                        System.err.println("Error enviando a " + email + ": " + e.getMessage());
+                    }
+                }
+            }
+        }
+
+        if (enviados == 0)
+            return ResponseEntity.internalServerError()
+                    .body(Map.of("ok", false, "msg", "No se pudo enviar a ningún destinatario."));
+
+        String msgRespuesta = fallidos > 0
+                ? "Enviado a " + enviados + " destinatario(s). Fallaron: " + fallidos + "."
+                : "Enviado exitosamente a " + enviados + " destinatario(s).";
+
+        return ResponseEntity.ok(Map.of(
+                "ok",     true,
+                "msg",    msgRespuesta,
+                "total",  enviados,
+                "asunto", asunto
+        ));
+    }
+    
+    private String construirHtml(String asunto, String contenido) {
+        return "<!DOCTYPE html><html><head><meta charset='UTF-8'/>"
+             + "<style>body{margin:0;background:#f2f0eb;font-family:sans-serif;}"
+             + ".wrap{max-width:600px;margin:0 auto;background:#fff;}"
+             + ".header{background:#111;padding:28px 32px;border-bottom:3px solid #ff3b00;}"
+             + ".header h1{margin:0;font-size:1.4rem;letter-spacing:.12em;color:#f2f0eb;}"
+             + ".body{padding:32px;color:#333;line-height:1.7;font-size:.95rem;}"
+             + ".footer{background:#111;padding:20px 32px;font-size:.72rem;color:#666;}"
+             + "</style></head><body><div class='wrap'>"
+             + "<div class='header'><h1>MONKEY CLOTHING</h1></div>"
+             + "<div class='body'><h2>" + asunto + "</h2>"
+             + "<p>" + contenido.replace("\n", "<br/>") + "</p></div>"
+             + "<div class='footer'>© Monkey Clothing · Lima, Perú</div>"
+             + "</div></body></html>";
+    }
+    
+    package com.cibertec.monkey.controller;
+
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.ResponseEntity;
+    import org.springframework.stereotype.Controller;
+    import org.springframework.ui.Model;
+    import org.springframework.web.bind.annotation.*;
+    import com.cibertec.monkey.entity.Cliente;
+    import com.cibertec.monkey.service.ClienteService;
+    import com.cibertec.monkey.service.EmailService;
+
+    import java.util.List;
+    import java.util.Map;
+
+    @Controller
+    public class ClienteController {
+
+        @Autowired private ClienteService clienteService;
+        @Autowired private EmailService   emailService;
+        @GetMapping("/cliente")
+        public String listar(Model model) {
+            model.addAttribute("clientes", clienteService.listarTodosCliente());
+            return "cliente/index";
+        }
+
+        @GetMapping("/cliente/new")
+        public String crear(Model model) {
+            model.addAttribute("cliente", new Cliente());
+            return "cliente/create";
+        }
+
+        @PostMapping("/cliente")
+        public String guardar(@ModelAttribute("cliente") Cliente cliente) {
+            clienteService.guardarCliente(cliente);
+            return "redirect:/cliente";
+        }
+
+        @GetMapping("/cliente/edit/{id}")
+        public String editar(@PathVariable Integer id, Model model) {
+            model.addAttribute("cliente", clienteService.buscarById(id));
+            return "cliente/edit";
+        }
+
+        @PostMapping("/cliente/update/{id}")
+        public String actualizar(@PathVariable Integer id,
+                                 @ModelAttribute("cliente") Cliente cliente) {
+            cliente.setId(id);
+            clienteService.guardarCliente(cliente);
+            return "redirect:/cliente";
+        }
+
+        @GetMapping("/cliente/delete/{id}")
+        public String eliminar(@PathVariable Integer id) {
+            clienteService.eliminarCliente(id);
+            return "redirect:/cliente";
+        }
+        
+        @PostMapping("/api/newsletter")
+        @ResponseBody
+        public ResponseEntity<?> suscribir(@RequestBody Map<String, String> body) {
+            try {
+                String nombre   = body.getOrDefault("nombre",   "").trim();
+                String telefono = body.getOrDefault("telefono", "").trim();
+                String email    = body.getOrDefault("email",    "").trim();
+
+                if (nombre.isEmpty())
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("ok", false, "msg", "El nombre es obligatorio."));
+                if (email.isEmpty())
+                    return ResponseEntity.badRequest()
+                            .body(Map.of("ok", false, "msg", "El email es obligatorio."));
+
+                Cliente c = new Cliente();
+                c.setRazonSocial(nombre);
+                c.setTelefono(telefono.isEmpty() ? null : telefono);
+                c.setEmail(email);
+                c.setOrigen("newsletter");
+                clienteService.guardarCliente(c);
+
+                return ResponseEntity.ok(
+                        Map.of("ok", true, "msg", "¡Suscripción exitosa! Bienvenido a la familia Monkey."));
+
+            } catch (Exception e) {
+                return ResponseEntity.internalServerError()
+                        .body(Map.of("ok", false, "msg", "Error al procesar la suscripción."));
+            }
+        }
+        
+        @PostMapping("/cliente/mensajes/enviar")
+        @ResponseBody
+        public ResponseEntity<?> enviarNewsletter(@RequestBody Map<String, Object> body) {
+
+            Object asuntoObj  = body.get("asunto");
+            Object mensajeObj = body.get("mensaje");
+
+            String asunto  = asuntoObj  != null ? asuntoObj.toString().trim()  : "";
+            String mensaje = mensajeObj != null ? mensajeObj.toString().trim() : "";
+
+            if (asunto.isEmpty() || mensaje.isEmpty())
+                return ResponseEntity.badRequest()
+                        .body(Map.of("ok", false, "msg", "Asunto y mensaje son obligatorios."));
+
+            Object dest = body.get("destinatarios");
+            if (!(dest instanceof List<?> lista) || lista.isEmpty())
+                return ResponseEntity.badRequest()
+                        .body(Map.of("ok", false, "msg", "No hay destinatarios seleccionados."));
+
+            int enviados = 0;
+            int fallidos = 0;
+
+            for (Object item : lista) {
+                if (item instanceof Map<?, ?> d) {
+                    Object emailObj = d.get("email");
+                    String email = emailObj != null ? emailObj.toString().trim() : "";
+                    if (!email.isBlank()) {
+                        try {
+                            emailService.enviarAUno(email, asunto, construirHtml(asunto, mensaje));
+                            enviados++;
+                        } catch (Exception e) {
+                            fallidos++;
+                            System.err.println("Error enviando a " + email + ": " + e.getMessage());
+                        }
+                    }
+                }
+            }
+
+            if (enviados == 0)
+                return ResponseEntity.internalServerError()
+                        .body(Map.of("ok", false, "msg", "No se pudo enviar a ningún destinatario."));
+
+            String msgRespuesta = fallidos > 0
+                    ? "Enviado a " + enviados + " destinatario(s). Fallaron: " + fallidos + "."
+                    : "Enviado exitosamente a " + enviados + " destinatario(s).";
+
+            return ResponseEntity.ok(Map.of(
+                    "ok",     true,
+                    "msg",    msgRespuesta,
+                    "total",  enviados,
+                    "asunto", asunto
+            ));
+        }
+        
+        private String construirHtml(String asunto, String contenido) {
+            return "<!DOCTYPE html><html><head><meta charset='UTF-8'/>"
+                 + "<style>body{margin:0;background:#f2f0eb;font-family:sans-serif;}"
+                 + ".wrap{max-width:600px;margin:0 auto;background:#fff;}"
+                 + ".header{background:#111;padding:28px 32px;border-bottom:3px solid #ff3b00;}"
+                 + ".header h1{margin:0;font-size:1.4rem;letter-spacing:.12em;color:#f2f0eb;}"
+                 + ".body{padding:32px;color:#333;line-height:1.7;font-size:.95rem;}"
+                 + ".footer{background:#111;padding:20px 32px;font-size:.72rem;color:#666;}"
+                 + "</style></head><body><div class='wrap'>"
+                 + "<div class='header'><h1>MONKEY CLOTHING</h1></div>"
+                 + "<div class='body'><h2>" + asunto + "</h2>"
+                 + "<p>" + contenido.replace("\n", "<br/>") + "</p></div>"
+                 + "<div class='footer'>© Monkey Clothing · Lima, Perú</div>"
+                 + "</div></body></html>";
+        }
+}

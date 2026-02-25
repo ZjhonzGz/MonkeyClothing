@@ -1,0 +1,88 @@
+package com.cibertec.monkey.service.impl;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import com.cibertec.monkey.entity.*;
+import com.cibertec.monkey.repository.VentaRepository;
+import com.cibertec.monkey.service.*;
+
+@Service
+public class VentaServiceImpl implements VentaService {
+
+    private final VentaRepository ventaRepository;
+    private final ProductoService productoService;
+    private final DetalleVentaService detalleVentaService;
+
+    public VentaServiceImpl(VentaRepository ventaRepository,
+                            ProductoService productoService,
+                            DetalleVentaService detalleVentaService) {
+        this.ventaRepository = ventaRepository;
+        this.productoService = productoService;
+        this.detalleVentaService = detalleVentaService;
+    }
+
+    @Override
+    public Venta guardarVenta(Venta venta) {
+        return ventaRepository.save(venta);
+    }
+
+    @Override
+    public List<Venta> listarTodosVentas() {
+        return ventaRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public Venta registrarVentaCompleta(Venta venta, List<ProductoParaVender> carrito) {
+    	venta.setFecha(new java.util.Date());
+        Venta v = ventaRepository.save(venta);
+
+        BigDecimal subtotal = BigDecimal.ZERO;
+        BigDecimal ganancia = BigDecimal.ZERO;
+
+        for (ProductoParaVender item : carrito) {
+            Producto p = productoService.buscarProductoById(item.getIdproducto());
+            if (p == null) continue;
+
+            p.restarExistencia(item.getCantidad());
+            productoService.guardarProducto(p);
+
+            BigDecimal importeVenta  = item.getPrecioVenta().multiply(BigDecimal.valueOf(item.getCantidad()));
+            BigDecimal importeCompra = item.getPrecioCompra().multiply(BigDecimal.valueOf(item.getCantidad()));
+
+            DetalleVentaId id = new DetalleVentaId(v, p);
+            DetalleVenta dv = new DetalleVenta(id, item.getCantidad(),
+                    item.getPrecioVenta(), importeVenta, item.getPrecioCompra());
+            detalleVentaService.guardarDetalleVenta(dv);
+
+            subtotal = subtotal.add(importeVenta);
+            ganancia = ganancia.add(importeVenta.subtract(importeCompra));
+        }
+
+        BigDecimal igv   = subtotal.multiply(BigDecimal.valueOf(0.18));
+        BigDecimal total = subtotal.add(igv);
+        v.setSubtotal(subtotal);
+        v.setIgv(igv);
+        v.setTotal(total);
+        v.setGanancia(ganancia);
+        return ventaRepository.save(v);
+    }
+    
+    @Override
+    public Venta buscarVentaById(Long id) {
+        return ventaRepository.findById(id).orElse(null);
+    }
+    
+    @Override
+    @Transactional
+    public void eliminarVenta(Long id) {
+        List<DetalleVenta> detalles = detalleVentaService.buscarDetalleVentaByNroVenta(id);
+        for (DetalleVenta d : detalles) {
+            detalleVentaService.eliminarDetalleVenta(d);
+        }
+        ventaRepository.deleteById(id);
+    }
+}

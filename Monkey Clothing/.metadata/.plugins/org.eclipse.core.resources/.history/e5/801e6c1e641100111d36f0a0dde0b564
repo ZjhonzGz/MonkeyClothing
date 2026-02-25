@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Monkey Clothing — Producto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"/>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: #f2f0eb;
+            font-family: 'DM Sans', sans-serif;
+            font-weight: 300;
+            color: #111;
+        }
+
+        .page-wrapper {
+            max-width: 560px;
+            margin: 2.5rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .page-header { margin-bottom: 1.8rem; }
+
+        .page-header h1 {
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: 2.2rem;
+            letter-spacing: .08em;
+            color: #111;
+            line-height: 1;
+        }
+
+        .page-header p {
+            font-size: .72rem;
+            letter-spacing: .2em;
+            text-transform: uppercase;
+            color: #aaa;
+            margin-top: .3rem;
+        }
+
+        .form-card {
+            background: #fff;
+            border-top: 3px solid #ff3b00;
+            padding: 2.2rem 2rem;
+        }
+
+        /* Grid dos columnas para precios */
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.2rem;
+        }
+
+        .field { margin-bottom: 1.6rem; }
+
+        .field label {
+            display: block;
+            font-size: .62rem;
+            letter-spacing: .22em;
+            text-transform: uppercase;
+            color: #999;
+            margin-bottom: .5rem;
+        }
+
+        .field input,
+        .field select {
+            width: 100%;
+            border: none;
+            border-bottom: 1.5px solid #ddd;
+            padding: .6rem 0;
+            font-family: 'DM Sans', sans-serif;
+            font-size: .95rem;
+            color: #111;
+            background: transparent;
+            outline: none;
+            transition: border-color .2s;
+            appearance: none;
+            -webkit-appearance: none;
+        }
+
+        .field input:focus,
+        .field select:focus { border-color: #111; }
+
+        .select-wrap { position: relative; }
+
+        .select-wrap::after {
+            content: '▾';
+            position: absolute;
+            right: 0;
+            bottom: .6rem;
+            font-size: .8rem;
+            color: #aaa;
+            pointer-events: none;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: .8rem;
+            margin-top: 2rem;
+        }
+
+        .btn-guardar {
+            background: #111;
+            color: #f2f0eb !important;
+            border: none;
+            padding: .75rem 1.6rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            cursor: pointer;
+            transition: background .2s;
+        }
+
+        .btn-guardar:hover { background: #ff3b00; }
+
+        .btn-cancelar {
+            background: transparent;
+            color: #111 !important;
+            border: 1px solid #ccc;
+            padding: .75rem 1.6rem;
+            font-family: 'Bebas Neue', sans-serif;
+            font-size: .85rem;
+            letter-spacing: .2em;
+            cursor: pointer;
+            transition: border-color .2s;
+            text-decoration: none !important;
+            display: inline-block;
+        }
+
+        .btn-cancelar:hover { border-color: #111; }
+    </style>
+</head>
+<body>
+
+<nav th:replace="~{componentes/navbar :: navbar}"></nav>
+
+<div class="page-wrapper">
+
+    <div class="page-header">
+        <h1>Formulario Producto</h1>
+        <p>Completa los datos del producto</p>
+    </div>
+
+    <div class="form-card">
+        <form th:action="@{/productos/guardar}" th:object="${producto}" method="post">
+
+            <input type="hidden" th:field="*{idproducto}"/>
+
+            <div class="field">
+                <label>Código</label>
+                <input type="text" th:field="*{codigo}"/>
+            </div>
+
+            <div class="field">
+                <label>Descripción</label>
+                <input type="text" th:field="*{descripcion}"/>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label>Precio Compra</label>
+                    <input type="number" step="1" th:field="*{precioCompra}"/>
+                </div>
+                <div class="field">
+                    <label>Precio Venta</label>
+                    <input type="number" step="1" th:field="*{precioVenta}"/>
+                </div>
+            </div>
+
+            <div class="field">
+                <label>Stock</label>
+                <input type="number" th:field="*{stock}"/>
+            </div>
+
+            <div class="field">
+                <label>Categoría</label>
+                <div class="select-wrap">
+                    <select name="idcate">
+                        <option value="">-- Seleccione --</option>
+                        <option th:each="c : ${categorias}"
+                                th:value="${c.idcate}"
+                                th:text="${c.descripcion}"
+                                th:selected="${c.idcate == categoriaSeleccionada}">
+                        </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-guardar">Guardar</button>
+                <a th:href="@{/productos}" class="btn-cancelar">Cancelar</a>
+            </div>
+
+        </form>
+    </div>
+
+</div>
+
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

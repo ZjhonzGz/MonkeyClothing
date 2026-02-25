@@ -1,0 +1,46 @@
+package com.cibertec.monkey.repository;
+
+import java.math.BigDecimal;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import com.cibertec.monkey.entity.ProductoStockDTO;
+import com.cibertec.monkey.entity.VentaResumenDTO;
+import com.cibertec.monkey.entity.Venta;
+
+@Repository
+public interface DashboardRepository extends JpaRepository<Venta, Long> {
+
+    @Query(value = "SELECT COUNT(*) FROM ventas WHERE DATE(fecha) = CURDATE()", nativeQuery = true)
+    Long contarVentasHoy();
+
+    @Query(value = "SELECT COALESCE(SUM(total), 0) FROM ventas " +
+                   "WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())",
+           nativeQuery = true)
+    BigDecimal totalIngresosMes();
+
+    @Query(value = "SELECT COALESCE(SUM(ganancia), 0) FROM ventas " +
+                   "WHERE MONTH(fecha) = MONTH(CURDATE()) AND YEAR(fecha) = YEAR(CURDATE())",
+           nativeQuery = true)
+    BigDecimal totalGananciaMes();
+
+    @Query(value = "SELECT COUNT(*) FROM producto WHERE stock <= :umbral", nativeQuery = true)
+    Long contarProductosStockBajo(@Param("umbral") int umbral);
+
+    @Query(value = "SELECT p.descripcion AS descripcion, c.descripcion AS categoria, p.stock AS stock " +
+                   "FROM producto p INNER JOIN categorias c ON p.idcate = c.idcate " +
+                   "WHERE p.stock <= :umbral ORDER BY p.stock ASC",
+           nativeQuery = true)
+    List<ProductoStockDTO> listarProductosStockBajo(@Param("umbral") int umbral);
+
+    @Query(value = "SELECT v.nroventa AS nroventa, v.fecha AS fecha, " +
+            "c.razon_soc AS cliente, a.nombres AS asesor, v.total AS total " +
+            "FROM ventas v " +
+            "INNER JOIN cliente c ON v.idclie = c.idclie " +
+            "INNER JOIN asesor_vta a ON v.codasesor = a.codasesor " +
+            "ORDER BY v.fecha DESC LIMIT 5",
+    nativeQuery = true)
+List<VentaResumen> ultimasVentas();
+}

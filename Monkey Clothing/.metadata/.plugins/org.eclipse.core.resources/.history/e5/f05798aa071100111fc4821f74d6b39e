@@ -1,0 +1,47 @@
+package com.cibertec.monkey.service.impl;
+
+import java.math.BigDecimal;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import com.cibertec.monkey.entity.ProductoStock;
+import com.cibertec.monkey.entity.VentaResumen;
+import com.cibertec.monkey.repository.DashboardRepository;
+import com.cibertec.monkey.service.DashboardService;
+
+@Service
+public class DashboardServiceImpl implements DashboardService {
+
+    @Autowired
+    private DashboardRepository repo;
+
+    @Override
+    public Long contarVentasHoy() {
+        return repo.contarVentasHoy();
+    }
+
+    @Override
+    public BigDecimal totalIngresosMes() {
+        return repo.totalIngresosMes();
+    }
+
+    @Override
+    public BigDecimal totalGananciaMes() {
+        return repo.totalGananciaMes();
+    }
+
+    @Override
+    public Long contarProductosStockBajo(int umbral) {
+        return repo.contarProductosStockBajo(umbral);
+    }
+
+    @Override
+    public List<ProductoStock> listarProductosStockBajo(int umbral) {
+        return repo.listarProductosStockBajo(umbral);
+    }
+
+    @Override
+    public List<VentaResumen> ultimasVentas(int limite) {
+        return repo.ultimasVentas(limite);
+    }
+}

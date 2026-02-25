@@ -1,0 +1,58 @@
+package com.cibertec.monkey.controller;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+
+import com.cibertec.monkey.entity.Usuario;
+import com.cibertec.monkey.service.UsuarioService;
+
+@Controller
+@RequiredArgsConstructor
+public class UsuarioController {
+
+    private final UsuarioService usuarioService;
+
+    // =============================
+    // MUESTRA LOGIN AL ENTRAR AL SISTEMA
+    // http://localhost:8080/
+    // =============================
+    @GetMapping("/")
+    public String inicio() {
+        return "login";
+    }
+
+    // =============================
+    // PROCESA LOGIN
+    // =============================
+    @PostMapping("/login")
+    public String login(@RequestParam String usuario,
+                        @RequestParam String clave,
+                        HttpSession session,
+                        Model model) {
+
+        Usuario user = usuarioService.validarLogin(usuario, clave);
+
+        if (user == null) {
+            model.addAttribute("error", "Usuario o clave incorrectos");
+            return "login";
+        }
+
+        // Guardamos usuario en sesión (igual que en clase)
+        session.setAttribute("usuarioLogeado", user);
+
+        // Entramos al módulo principal
+        return "redirect:/producto/listar";
+    }
+
+    // =============================
+    // LOGOUT
+    // =============================
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
+    }
+}
